@@ -56,7 +56,8 @@ Necessita executar-se amb dos algorismes més, dins el mateix directori, que us 
 
 Teniu un exemple del resultat final (work in progress) a…
 **reparacioJuridicaVictimesFranquisme_pancarta140318.pdf**
-…NOTA IMPORTANT PER LA CERCA DE NOMS DINS EL PDF: amb *viewers* tipus *AdobeReader* (almenys en darreres versions a MacOSX), degut segurament a l'alta densitat de noms dins d'una sola pàgina (més de seixanta-sis mil resgistres), el Find/Search no funciona correctament (localitza noms incorrectes).
+
+NOTA IMPORTANT PER A LA CERCA DE NOMS DINS EL PDF: amb *viewers* tipus *AdobeReader* (almenys en darreres versions a MacOSX), degut segurament a l'alta densitat de text dins d'una sola pàgina (més de seixanta-sis mil resgistres), el Find/Search no funciona correctament (localitza noms incorrectes).
 
 
 Documentació d'errors, suggeriments i tota mena de col·laboracions, seran benvingudes!
