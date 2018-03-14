@@ -1,0 +1,370 @@
+%!
+%#  `GNU GPL FemFum llegeixCSVopenData_escriuArrays.ps v.01´ llegeix dades endreçades en CSV amb variables diverses,
+%#  i les escriu en arrays categoritzades i adaptades a l'open data set de la Llista de reparació jurídica de víctimes
+%#  del franquisme (1938-1978) publicades per l'Arxiu Nacional de Catalunya
+%#  https://analisi.transparenciacatalunya.cat/browse?category=Mem%C3%B2ria
+%#  https://analisi.transparenciacatalunya.cat/Mem-ria/Llista-de-reparaci-jur-dica-de-v-ctimes-del-franqu/ebet-mrfp
+%#  http://anc.gencat.cat/ca/detall/noticia/La-llista-de-reparacio-juridica-de-victimes-del-franquisme-en-dades-obertes
+%#
+%#  Per a intèrprets `GNU GPL Ghostscript´ però també, amb ben pocs retocs, pot córrer
+%#  amb l'Adobe Acrobat Distiller (fins hi tot amb MacOSX PSNormalizer Framework/Apple pstopdf).
+%# 
+%#  `Copyleft 2018 :: l'Ametlla de Merola :: Marc Antoni Malagarriga i Picas´
+%#  `<http://www.femfum.com> | <marcantoni@femfum.com>´
+%#  `https://github.com/marcantonifemfum/faSantJaume´
+%# 
+%#  Aquest programa és programari lliure: podeu redistribuir-lo i/o modificar-lo
+%#  sota els termes de la Llicència Pública General de GNU publicada per la Free
+%#  Software Foundation, ja sigui la versió 3 de la Llicència, o (a la seva elecció)
+%#  qualsevol versió posterior.
+%# 
+%#  Aquest programa es distribueix amb l'esperança que sigui útil, però SENSE CAP GARANTIA;
+%#  ni tan sols la garantia implícita MERCANTIL o d'APTITUD PER A UN OBJECTIU PARTICULAR.
+%#  Consulteu els detalls de la Llicència Pública General de GNU per a més informació.
+%# 
+%#  Haurieu de rebre una còpia de la Llicència Pública General de GNU junt amb aquest
+%#  programa. En cas contrari, consulteu <http://www.gnu.org/licenses/>
+
+%% línia de comanda a l'intèrpret Ghostscript (Linux/Unix)
+%% gs -q -dNOSAFER -o re.pdf -sDEVICE=pdfwrite -c .setpdfwrite -f llegeixCSVopenData_escriuArrays.ps 
+%% aquest algorisme necessitaria uns retocs per ser executat en d'altres intèrprets com l'Acrobat Distiller o l'Apple pstopdf
+
+%% els valors principals de configuració són comentats amb %#
+
+%%ATENCIÓ les dades del CSV... http://anc.gencat.cat/ca/detall/noticia/La-llista-de-reparacio-juridica-de-victimes-del-franquisme-en-dades-obertes ...tenen alguns errors
+%# CAL corregir abans de tractar-les:
+%% als primers camps, corresponents a persones jurídiques, hi ha diversos retorns de carro innecessaris
+%% hi ha dobles cometes " innecessàries i repetides a noms diversos de persones físiques i jurídiques
+%% hi ha camps amb el nom de la persona jurídica on s'hi han inclòs el motius (repetits al camp que toca) 
+%% hem canviat un punt per una coma a Guissona, afegint més comes al nom massa llarg i hem posat a caixa baixa Diari Revista
+%% hi ha el registre Codi 37682 i cognoms nom SALUDES COMPANYS, Miguel que al camp pena i duu un ; de+ malgrat les ""
+%% "Sis anys, deu mesos i un dia de presó major; dos anys, onze mesos i onze dies de presó menor"
+%% hi ha el registre Codi 145966 amb " innecessàries [("WELZEL, Georg Michael \("Heinz Ches"\)") true (145966) ]
+%% hi ha el registre Codi 102952 [(SOLER FERRER, Manuel o FERRER SOLER) false (102952) ]
+%% aquest nom és poc creïble: [(NUESTRA SE\321ORA GARCIMART\315N, Bernardo de) false (10722)]
+
+%% un camp menys (el darrer) a l'actual
+%% (/Users/femfum/OnEtsOncleGuillem/parlament/ReparacioJuridicaVictimes36-77/2017-07-12_Llistat_Llei_11_2017.csv)
+%% un camp més (el darrer)
+%% (/Users/femfum/OnEtsOncleGuillem/parlament/ReparacioJuridicaVictimes36-77/20171101_actualitzat_llistat_Llei_11_2017.csv)
+%# darrera actualització 01.02.18
+(/Users/femfum/OnEtsOncleGuillem/parlament/ReparacioJuridicaVictimes36-77/faStJaume/20171101_actualitzat_llistat_Llei_11_2017_darrer010218.csv)
+/Arxiu exch def
+
+%# caràcter separador de camps (s'entén que hi ha un registre per línia)
+(;)
+/sepArador exch def
+
+%% l'encoding /WinAnsiEncoding quadra amb la codificació que desa el TextEdit de MacOSX amb Windows Latin 1
+systemdict /EncodingDirectory get /WinAnsiEncoding get
+/xifrAt exch def
+
+[  %# transcrivim exactament l'enunciat de cada camp per detectar canvis en versions successives
+ (Codi)  %% 0
+ (cognoms nom)  %% 1
+ (cognoms)  %% 2
+ (nom)  %% 3
+ (sexe)  %% 4
+ (edat)  %% 5
+ (Municipi naixement)  %% 6
+ (Pedanies/Agregats naixement)  %% 7
+ (Comarca naixement)  %% 8
+ (Província naixement)  %% 9
+ (Comunitat autònoma naixement)  %% 10
+ (País naixement)  %% 11
+ (Municipi residència)  %% 12
+ (Pedanies/Agregats residencia)  %% 13 hi ha un error ortogràfic (residència) al CSV original, que mantenim
+ (Comarca residència)  %% 14
+ (Província residència)  %% 15
+ (Comunitat autònoma residència)  %% 16
+ (País residència)  %% 17
+ (Tipus procediment 1)  %% 18
+ (Tipus procediment 2)  %% 19
+ (num causa)  %% 20
+ (any inicial)  %% 21
+ (any aprovació sen o altra resol)  %% 22 hi ha un escapçat singular del nom del camp, que mantenim
+ (pena)  %% 23
+ (commutació/indult(demanat))  %% 24
+ (afusellades)  %% 25
+ (ref num arxiu)  %% 26
+ (autoria i data de la descripció)  %% 27
+ (data correcció registre)  %% 28 és previst que hi sigui però a les dades del darrer CSV no hi és a cap registre
+]
+/cAmps exch def
+
+(aplanatCaixaBaixa.ps) (r) file cvx exec
+/aplana exch def  %# desem una vegada l'array aplanadora d'accents a caixa baixa
+
+%% consells de guerra de la A-Z
+/iConsellsDguerra 0 def
+%% dones amb consells de guerra de la A-Z
+/iDonesConsellsDguerra 0 def
+%% dones indultades amb consells de guerra de la A-Z
+/iDonesIndultadesConsellsDguerra 0 def
+%% dones executades amb consells de guerra de la A-Z
+/iDonesExecutadesConsellsDguerra 0 def
+%% total de persones afusellades
+/iPersonesAfusellades 0 def
+%% comptador de registres
+/rgstrs 0 def
+
+%% cognoms+nom més llarg (text)
+/araNomMesLlarg null def
+%% cognoms+nom més llarg (nombre de caràcters)
+/iNomMesLlarg 0 def
+%% detector de noms duplicats en registres seguits (causes diverses a una mateixa persona?)
+/suaraNom null def
+
+%% valor decimal del caràcter alfabètic actual (se suposa que el CSV ja és ordenat)
+/arAlf 0 def
+
+%# arrays amb els nom ja triats (no fem diccionaris perquè perderíem l'ordre alfabètic)
+[
+ %/triaPfisicaH
+ []  %% 0 homes
+ %/triaPfisicaD
+ []  %% 1 dones
+ %/triaPjuridica
+ []  %% 2 persones jurídiques
+] /aTria exch def
+
+%% llegim la primera línia del fitxer d'estructura dels camps...
+Arxiu (r) file dup 3072 string readline pop
+%% ...i comprovem si el nom i el nombre de camps es manté de la darrera revisió, segons /cAmps
+0 exch  %% índex del camp
+{  %% loop per registre
+ sepArador search
+ {  %% esbrinem camp a camp
+  cAmps 4 index get eq
+  {
+   pop exch 1 add exch  %% fem córrer l'índex
+  }
+  {
+   pop
+   (\n\n >>> HI HA UN CANVI a l'enunciat del camp... )print flush
+   exch cAmps exch get print flush ( ...pleguem!\n\n)print flush
+   pstack quit
+  }ifelse
+ }
+ {
+  pop exit
+ }ifelse
+}loop  %% loop per registre
+1 add cAmps length ne
+{
+ (\n\n >>> HI HA UN CANVI en el nombre de camps... pleguem!\n\n)print flush quit
+}if
+/arXiu exch def  %% capturem el fitxer viu per seguir llegint
+
+{  %% loop de lectura i cerca al CSV
+ arXiu 3072 string readline
+ {
+  /iCamp 0 def
+  {  %% loop per registre
+   sepArador search
+   {  %% esbrinem camp a camp
+
+    %% ho llista tot
+    %cAmps iCamp get print flush  %% títol del camp
+    %==   %% contingut del camp
+    %pop  %% sepArador
+
+    %% no llista re
+    %pop pop
+
+    %% el codi el desarem a l'array de tria per si fes falta
+    iCamp 0 eq
+    {
+     dup /araCodi exch def
+    }if
+
+    %% mirem quin és el cognoms+nom més llarg
+    iCamp 1 eq
+    {
+     dup dup suaraNom eq
+     {  %% detector de noms duplicats (diverses causes?)
+      %% per mantenir la interactivitat al prompt cal treure una string buida?
+      ()print flush
+%%araCodi ==
+%%(\n...repetit...\n)print flush
+      /elDesem false def
+     }
+     {  %% el nom només una vegada
+      dup /triaNom exch def
+      /elDesem true def
+     }ifelse
+     /araNom exch def dup /suaraNom exch def
+     dup 0 get
+     %% abans l'aplanem a caixa baixa (i si la volem a alta només cal restar-hi 32)
+     aplana exch get
+     dup
+     %% valor decimal del caràcter alfabètic actual (se suposa que el CSV ja és ordenat)
+     arAlf ne
+     {  %% canviem de caràcter en l'ordre alfabètic
+      dup /arAlf exch def
+      1 string dup 3 -1 roll 0 exch put ==
+     }
+     {
+      pop
+     }ifelse
+    }if
+
+    %% per sexe
+    iCamp 4 eq
+    {
+     dup /seXe exch def
+    }if
+
+
+    %% llista consells de guerra de la A-Z
+    iCamp 18 eq
+    {
+     (Consells de guerra) search
+     {  %% en té
+
+      %% mirem quin és el cognoms+nom de persona NO jurídica és més llarg
+      seXe (--) ne
+      {  %% no és una persona jurídica
+       araNom length iNomMesLlarg gt
+       {
+        araNom length /iNomMesLlarg exch def
+        araNom /araNomMesLlarg exch def
+       }if
+       %% dona?
+       seXe (Dona) eq
+       {
+        /Bd true def
+        iDonesConsellsDguerra 1 add /iDonesConsellsDguerra exch def
+        /araTria 1 def  %% dona
+       }
+       {
+        /Bd false def
+        /araTria 0 def  %% home
+       }ifelse
+      }
+      {  %% és una persona jurídica
+       /xctt false def  %% segur que no va ser executada
+       /araTria 2 def
+      }ifelse
+
+      /Bcg true def
+      pop pop pop
+      iConsellsDguerra 1 add /iConsellsDguerra exch def
+     }
+     {  %% no en té de consell de guerra
+      /Bcg false def
+      /Bd false def
+      pop
+      seXe (--) eq
+      {
+       /araTria 2 def  %% persona jurídica
+      }
+      {
+       seXe (Dona) eq
+       {
+        /araTria 1 def  %% dona
+       }
+       {
+        /araTria 0 def  %% home
+       }ifelse
+      }ifelse
+      /xctt false def  %% segur que no va ser executada
+     }ifelse
+     pop 
+    }
+    {
+     iCamp 25 eq  %% executat/da?
+     {
+      %% total d'afusellats (H/D)
+      dup length 0 ne
+      {
+       iPersonesAfusellades 1 add /iPersonesAfusellades exch def
+       /xctt true def  %% va ser executada
+      }
+      {
+       /xctt false def  %% segur que no va ser executada
+      }ifelse
+      Bcg Bd and
+      {  %% és una dona amb consell de guerra
+       length 0 eq
+       {  %% indultada
+        iDonesIndultadesConsellsDguerra 1 add /iDonesIndultadesConsellsDguerra exch def
+       }
+       {  %% executada
+        iDonesExecutadesConsellsDguerra 1 add /iDonesExecutadesConsellsDguerra exch def
+       }ifelse
+       pop
+      }
+      {
+       pop pop
+      }ifelse
+     }
+     {
+      pop pop
+     }ifelse
+    }ifelse
+
+%%EP!
+    iCamp 28 eq
+    {  %% hi ha cap registre que dugui el darrer camp possible amb la data de modificació
+     araCodi == 
+    }if
+
+    %% deixem la resta de la línia del registre a l'stack
+    iCamp 1 add /iCamp exch def  %% índex del camp
+   }
+   {
+    pop exit
+   }ifelse
+  }loop  %% per registre
+
+  %% desem el nom?
+  elDesem
+  {
+   aTria araTria get  %% triem l'array home, dona o persona jurídica
+   dup length dup /araVa exch def 1 add array dup 3 -1 roll 0 exch putinterval  %% ampliem
+   dup araVa
+   [
+    araNom  %% string amb cognoms i nom separat per una coma
+    xctt  %% gatell de si ha estat executat/ada
+    araCodi  %% corresponent al camp 0 Codi
+   ] put  %% afegim el registre únic
+   aTria exch araTria exch put  %% desem a aTria
+  }if
+
+  rgstrs 1 add /rgstrs exch def
+ }
+ {  %% sortim
+  %PSout dup flushfile closefile
+  arXiu dup flushfile closefile
+  pop exit
+ }ifelse
+}loop  %% de lectura i cerca al CSV
+
+%% camps totals
+(\n) print flush
+rgstrs 128 string cvs print flush ( <<< registres totals del DataSet\n) print flush
+iConsellsDguerra 128 string cvs print flush ( <<< persones amb consells de guerra (H/D)\n) print flush
+iDonesConsellsDguerra 128 string cvs print flush ( <<< dones amb consell de guerra\n) print flush
+iDonesExecutadesConsellsDguerra 128 string cvs print flush ( <<< dones executades amb consell de guerra\n) print flush
+iDonesIndultadesConsellsDguerra 128 string cvs print flush ( <<< dones indultades amb consell de guerra\n) print flush
+iPersonesAfusellades 128 string cvs print flush ( <<< persones afusellades (H/D)\n) print flush
+araNomMesLlarg print flush ( <<< possiblement el nom més llarg a compondre\n) print flush
+iNomMesLlarg 128 string cvs print flush ( <<< nombre de caràcters del nom més llarg a compondre\n) print flush
+
+(\n\n...escrivim les arrays a disc...\n\n)print flush
+(espiapaq_fura4_.ps) (r) file cvx exec  %# carreguem en memòria el procediment espiapaq_fura4
+%# path amb el nom dels fitxers d'escriptura de les arrays categoritzades (per aquest ordre, ídem a /aTria)
+(personesJuridiquesRepresaliades.txt)
+(donesRepresaliades.txt)
+(homesRepresaliats.txt)
+aTria
+{
+ exch (w) file /Objected'Ara exch def  %% desem el fitxer d'escriptura a la variable q fa servir /espiapaq_fura4
+ %% cridem l'espiapaq_fura4 i deixem una string buida per que no peti?
+ /salva'l save def espiapaq_fura4 salva'l restore
+}forall
+
+%% brossa?
+(...brossa?)pstack
+
