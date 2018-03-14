@@ -1,0 +1,1110 @@
+%!
+%#  `GNU GPL FemFum componStJaume.ps v.01´ llegeix les dades endreçades en arrays que hem generat prèviament en TXT
+%#  via llegeixCSVopenData_escriuArrays.ps provinents del CSV de la Llista de Reparació Jurídica de Víctimes del Franquisme
+%#  (1938-1978) publicades per l'Arxiu Nacional de Catalunya...
+%#  https://analisi.transparenciacatalunya.cat/browse?category=Mem%C3%B2ria
+%#  https://analisi.transparenciacatalunya.cat/Mem-ria/Llista-de-reparaci-jur-dica-de-v-ctimes-del-franqu/ebet-mrfp
+%#  http://anc.gencat.cat/ca/detall/noticia/La-llista-de-reparacio-juridica-de-victimes-del-franquisme-en-dades-obertes
+%#  ...i les compon dinàmicament encolumnades, per categories, amb caplletres alfabètiques i ressaltant-ne les execucions,
+%#  amb valors totals i unes capçaleres fixes, per a confeccionar una gran parcarta (10x1,5m aprox) per a les concentracions
+%#  mesuals de la Mesa de Catalunya d'Entitats Memorialistes, a la plaça de Sant Jaume de Barcelona
+%#
+%#  Per a intèrprets `GNU GPL Ghostscript´ però també, amb ben pocs retocs, pot córrer
+%#  amb l'Adobe Acrobat Distiller (fins hi tot amb MacOSX PSNormalizer Framework/Apple pstopdf).
+%# 
+%#  `Copyleft 2018 :: l'Ametlla de Merola :: Marc Antoni Malagarriga i Picas´
+%#  `<http://www.femfum.com> | <marcantoni@femfum.com>´
+%#  `https://github.com/marcantonifemfum/faSantJaume´
+%# 
+%#  Aquest programa és programari lliure: podeu redistribuir-lo i/o modificar-lo
+%#  sota els termes de la Llicència Pública General de GNU publicada per la Free
+%#  Software Foundation, ja sigui la versió 3 de la Llicència, o (a la seva elecció)
+%#  qualsevol versió posterior.
+%# 
+%#  Aquest programa es distribueix amb l'esperança que sigui útil, però SENSE CAP GARANTIA;
+%#  ni tan sols la garantia implícita MERCANTIL o d'APTITUD PER A UN OBJECTIU PARTICULAR.
+%#  Consulteu els detalls de la Llicència Pública General de GNU per a més informació.
+%# 
+%#  Haurieu de rebre una còpia de la Llicència Pública General de GNU junt amb aquest
+%#  programa. En cas contrari, consulteu <http://www.gnu.org/licenses/>
+
+%% línia de comanda a l'intèrpret Ghostscript (Linux/Unix)
+%% gs -q -dNOSAFER -o re.pdf -sDEVICE=pdfwrite -c .setpdfwrite -f componStJaume.ps
+%% aquest algorisme necessitaria uns retocs per ser executat en d'altres intèrprets com l'Acrobat Distiller o l'Apple pstopdf
+
+%% els valors principals de configuració són comentats amb %#
+
+%% espai de color de treball
+/DeviceCMYK setcolorspace
+0 0 0 1 setcolor
+
+%% tipografies
+%% ara fem servir:
+(\n>>>> tipografies de treball:\n\n)print flush
+%% Myriad MM
+%# fem l'alta de la Myriad Multiple Master recodificada a WinAnsi (amb 1 vegada n'hi ha prou!)
+(/Users/femfum/MultipleMaster/Myriad/_MI_____.PFB) findfont
+%% extraiem també els valors mínims i màxims de cadascun dels eixos dinàmics de la MM (en aquesta Myriad només pes i ample)
+/MyriadMMeixosDinamics 0 dict def
+dup /FontInfo get dup /FIMM exch def
+dup /FullName get ==  %% llistem el nom de la tipografia de treball
+/BlendAxisTypes get
+dup ==  %% llistem l'orde dels eixos dinàmics
+length 1 sub 0 exch 1 exch
+{
+ /araEix exch def
+ MyriadMMeixosDinamics
+ FIMM /BlendAxisTypes get araEix get
+ [  %% potser que l'eix de mescla sigui linial entre més de dos valors (p.e. si hi hagués eix de correcció òptica)
+  FIMM /BlendDesignMap get araEix get
+  {aload pop pop}forall
+ ] put
+}for
+dup length dict begin
+{
+ 1 index /FID ne
+ {def}{pop pop}ifelse
+}forall
+%% atenció que aquesta crida només és vàlida a Ghostscript!
+/Encoding systemdict /EncodingDirectory get /WinAnsiEncoding get def  %% xifrat WinAnsi
+currentdict end /MyriadGalerada_WA exch definefont pop
+%% mooolt important: carreguem una (1) sola vegada el diccionari genèric ben xifrat de la Myriad
+/MyriadGalerada_WA findfont dup /MyMMionari exch def
+%% calculem el % del descendent del FontBBox per tal de centrar bé la línia de base en relació al cos
+/FontBBox get dup 1 get abs dup 3 -1 roll 3 get add exch 100 mul exch div /MyMMx100LiniaDbase exch def
+MyriadMMeixosDinamics
+%# llistem els rangs dels eixos dinàmics per si volem modificar l'array del vector que treballarà makeblendedfont
+{== ==}forall
+()print flush(\n\n)print flush
+
+%% MyriadPro-Bold  %% per les capçaleres
+(/Library/Fonts/MyriadPro-Bold.otf) findfont
+dup length dict begin
+{
+ 1 index /FID ne
+ {def}{pop pop}ifelse
+}forall
+%% atenció que aquesta crida només és vàlida a Ghostscript!
+/Encoding systemdict /EncodingDirectory get /WinAnsiEncoding get def  %% xifrat WinAnsi
+currentdict end /MyriadPB_WA exch definefont pop
+%% mooolt important: carreguem una (1) sola vegada el diccionari genèric ben xifrat de la Myriad
+/MyriadPB_WA findfont dup /MyPBionari exch def
+%% calculem el % del descendent del FontBBox per tal de centrar bé la línia de base en relació al cos
+dup /FontBBox get dup 1 get abs dup 3 -1 roll 3 get add exch 100 mul exch div /MyPBx100LiniaDbase exch def
+/FontInfo get /FullName get ==  %% llistem el nom de la tipografia de treball
+
+%% no utilitzem
+%% AdobeSans
+false{
+(/Users/femfum/MultipleMaster/AdobeSans_AdobeSerif/ZX______.PFB) findfont
+%% extraiem també els valors mínims i màxims de cadascun dels eixos dinàmics de la MM (en aquesta AdobeSans només pes i ample)
+/AdobeSansMMeixosDinamics 0 dict def
+dup /FontInfo get dup /FIMM exch def
+dup /FullName get ==
+/BlendAxisTypes get
+dup ==
+length 1 sub 0 exch 1 exch
+{
+ /araEix exch def
+ AdobeSansMMeixosDinamics
+ FIMM /BlendAxisTypes get araEix get
+ [  %% potser que l'eix de mescla sigui linial entre més de dos valors (p.e. si hi hagués eix de correcció òptica)
+  FIMM /BlendDesignMap get araEix get
+  {aload pop pop}forall
+ ] put
+}for
+dup length dict begin
+{
+ 1 index /FID ne
+ {def}{pop pop}ifelse
+}forall
+%% atenció que aquesta crida només és vàlida a Ghostscript!
+/Encoding systemdict /EncodingDirectory get /WinAnsiEncoding get def  %% xifrat WinAnsi
+currentdict end /AdobeSansGalerada_WA exch definefont pop
+%% mooolt important: carreguem una (1) sola vegada el diccionari genèric ben xifrat de l'AdobeSans
+/AdobeSansGalerada_WA findfont dup /AsMMionari exch def
+%% calculem el % del descendent del FontBBox per tal de centrar bé la línia de base en relació al cos
+/FontBBox get dup 1 get abs dup 3 -1 roll 3 get add exch 100 mul exch div /AsMMx100LiniaDbase exch def
+%AdobeSansMMeixosDinamics
+%{== ==}forall
+
+%% Paul Haahr dóna aquest mètode com més estable...
+/instanciaMM  %% literal per definir la instància concreta que generem
+%% /MinionMM findfont  %% aquí substituïm la crida original pel seu diccionari ja normalitzat a WinAnsi...
+%MyMMionari
+%MiMMionari
+AsMMionari
+%AfMMionari
+dup begin  %% entrem dins el diccionari de la MM per poder cridar els procediments NormalizeDesignVector i ConvertDesignVector
+[  %% array del vector que treballarà makeblendedfont
+ %% el seu ordre (fixat per /BlendAxisTypes) i els seus valors possibles (fixats per /BlendDesignMap)
+ % 300 215  %% Myriad MM Italic necessitem obligatòriament tantes dades vàlides com eixos dinàmics de la MM
+ % 345 450 6  %% Minion MM Roman
+ 50 50  %% Adobe Sans MM
+ % 110 100  %% Adobe Serif MM
+ %% aquests dos procediments, i per aquest ordre, generen les dades necesàries del vector dins l'array
+ NormalizeDesignVector  %% normalitza les dades de cada eix mestre en valors entre 0 i 1
+ ConvertDesignVector  %% genera les dades finals pel seu ús dins la matriu de l'array per a makeblendedfont
+] end
+makeblendedfont
+definefont  %% fixem la font en memòria
+dup
+8 scalefont setfont
+25 275 moveto (ALDEA Y RUIZ DE CASTAÑEDA, María de la Purificación) show
+dup
+9 scalefont setfont
+25 260 moveto (ALDEA Y RUIZ DE CASTAÑEDA, María de la Purificación) show
+dup
+10 scalefont setfont
+25 245 moveto (ALDEA Y RUIZ DE CASTAÑEDA, María de la Purificación) show
+dup
+11 scalefont setfont
+25 230 moveto (ALDEA Y RUIZ DE CASTAÑEDA, María de la Purificación) show
+dup
+12 scalefont setfont
+25 215 moveto (ALDEA Y RUIZ DE CASTAÑEDA, María de la Purificación) show
+dup
+13 scalefont setfont
+25 200 moveto (ALDEA Y RUIZ DE CASTAÑEDA, María de la Purificación) show
+dup
+14 scalefont setfont
+25 185 moveto (ALDEA Y RUIZ DE CASTAÑEDA, María de la Purificación) show
+dup
+15 scalefont setfont
+25 170 moveto (ALDEA Y RUIZ DE CASTAÑEDA, María de la Purificación) show
+dup
+16 scalefont setfont
+25 155 moveto (ALDEA Y RUIZ DE CASTAÑEDA, María de la Purificación) show
+dup
+17 scalefont setfont
+25 140 moveto (ALDEA Y RUIZ DE CASTAÑEDA, María de la Purificación) show
+
+18 scalefont setfont
+25 125 moveto (ALDEA Y RUIZ DE CASTAÑEDA, María de la Purificación) show
+
+/instanciaMM  %% literal per definir la instància concreta que generem
+%% /MinionMM findfont  %% aquí substituïm la crida original pel seu diccionari ja normalitzat a WinAnsi...
+%MyMMionari
+%MiMMionari
+AsMMionari
+%AfMMionari
+dup begin  %% entrem dins el diccionari de la MM per poder cridar els procediments NormalizeDesignVector i ConvertDesignVector
+[  %% array del vector que treballarà makeblendedfont
+ %% el seu ordre (fixat per /BlendAxisTypes) i els seus valors possibles (fixats per /BlendDesignMap)
+ % 300 215  %% Myriad MM Italic necessitem obligatòriament tantes dades vàlides com eixos dinàmics de la MM
+ % 345 450 6  %% Minion MM Roman
+ 100 100  %% Adobe Sans MM
+ % 110 100  %% Adobe Serif MM
+ %% aquests dos procediments, i per aquest ordre, generen les dades necesàries del vector dins l'array
+ NormalizeDesignVector  %% normalitza les dades de cada eix mestre en valors entre 0 i 1
+ ConvertDesignVector  %% genera les dades finals pel seu ús dins la matriu de l'array per a makeblendedfont
+] end
+makeblendedfont
+definefont  %% fixem la font en memòria
+dup
+8 scalefont setfont
+25 350 moveto (ALDEA Y RUIZ DE CASTAÑEDA, María de la Purificación) show
+dup
+9 scalefont setfont
+25 335 moveto (ALDEA Y RUIZ DE CASTAÑEDA, María de la Purificación) show
+dup
+10 scalefont setfont
+25 320 moveto (ALDEA Y RUIZ DE CASTAÑEDA, María de la Purificación) show
+dup
+11 scalefont setfont
+25 305 moveto (ALDEA Y RUIZ DE CASTAÑEDA, María de la Purificación) show
+
+12 scalefont setfont
+25 290 moveto (ALDEA Y RUIZ DE CASTAÑEDA, María de la Purificación) show
+
+/instanciaMM  %% literal per definir la instància concreta que generem
+%% /MinionMM findfont  %% aquí substituïm la crida original pel seu diccionari ja normalitzat a WinAnsi...
+%MyMMionari
+%MiMMionari
+AsMMionari
+%AfMMionari
+dup begin  %% entrem dins el diccionari de la MM per poder cridar els procediments NormalizeDesignVector i ConvertDesignVector
+[  %% array del vector que treballarà makeblendedfont
+ %% el seu ordre (fixat per /BlendAxisTypes) i els seus valors possibles (fixats per /BlendDesignMap)
+ % 300 215  %% Myriad MM Italic necessitem obligatòriament tantes dades vàlides com eixos dinàmics de la MM
+ % 345 450 6  %% Minion MM Roman
+ 200 200  %% Adobe Sans MM
+ % 110 100  %% Adobe Serif MM
+ %% aquests dos procediments, i per aquest ordre, generen les dades necesàries del vector dins l'array
+ NormalizeDesignVector  %% normalitza les dades de cada eix mestre en valors entre 0 i 1
+ ConvertDesignVector  %% genera les dades finals pel seu ús dins la matriu de l'array per a makeblendedfont
+] end
+makeblendedfont
+definefont  %% fixem la font en memòria
+dup
+8 scalefont setfont
+25 425 moveto (ALDEA Y RUIZ DE CASTAÑEDA, María de la Purificación) show
+dup
+9 scalefont setfont
+25 410 moveto (ALDEA Y RUIZ DE CASTAÑEDA, María de la Purificación) show
+dup
+10 scalefont setfont
+25 395 moveto (ALDEA Y RUIZ DE CASTAÑEDA, María de la Purificación) show
+dup
+11 scalefont setfont
+25 380 moveto (ALDEA Y RUIZ DE CASTAÑEDA, María de la Purificación) show
+
+12 scalefont setfont
+25 365 moveto (ALDEA Y RUIZ DE CASTAÑEDA, María de la Purificación) show
+}if
+%% no utilitzem
+
+
+/BanderaDreta_Cshow
+{  %% componedor amb l'operador cshow
+ { %% el proc per cshow s'aplica a cada glif de la cadena
+
+  pop  %% valor per glifs d'escriptura vertical
+  dup faLinia add
+  dup maxL gt
+
+  {  %% hem esgotat l'ample de línia
+   pop
+   aElDarrerMot add  %% aquesta és la clau que fa que no s'escapi cap mot més enllà del màxim d'ample de línia
+
+   dup maxCOL gt
+   {  %% redefinim l'ampe de columna
+    dup /maxCOL exch def
+   }if
+
+   /faLinia exch def  %% el valor de l'ample de la nova línia
+
+   fotli exch write
+   currentpoint iL sub mX exch dup /YdarrerPgraf exch def moveto pop
+   nmot 1 add /nmot exch def
+   nL 1 add /nL exch def
+
+   rengs maxRengs eq
+   {  %% som al final de la columna
+    %% un truc per mantenir la interactivitat al prompt és treure una string buida?
+    ()print flush
+    iCOL dup 3 string cvs print flush ( columnes\n)print flush 1 add /iCOL exch def
+
+    /rengs 0 def
+    %% just el tram de text que no hem compost i cal passar a la columna següent
+    eSCRiu dup length iCar sub iCar exch getinterval dup
+%    (1)==
+    %% purgat de nulls al darrer mot
+    mot 0 (\000) /SubFileDecode filter 256 string readstring pop
+    %% si els dos strings són idèntics és que ja s'han escrit i llavors ja hem acabat
+    eq
+    {
+     /xEscriure false def
+     %% eliminem la cadena a l'stack doncs ja l'hem compost
+     pop
+    }
+    {
+     /xEscriure true def
+    }ifelse
+    exit  %% sortim del loop de la columna
+   }
+   {  %% seguim component rengs, doncs encara no som al final de la columna
+    rengs 1 add /rengs exch def
+   }ifelse
+  }
+  {
+   dup maxCOL gt
+   {  %% redefinim l'ample de columna
+    dup /maxCOL exch def
+   }if
+
+   /faLinia exch def
+   exch dup
+
+   %# codi decimal del caràcter detector per trencar la línia
+   %% 32  %% espai en blanc
+   %% 95  %% guió baix
+   44  %% coma
+
+   eq
+   {  %% ja hem compost un mot
+    fotli exch write
+    pop  %% faLinia exch sub aElDarrerMot sub
+    /aElDarrerMot 0 def  %% això és l'ample del darrer mot compost
+    fotli closefile
+    mot 0 nmot 1 add getinterval currentpoint dup /YdarrerPgraf exch def moveto
+
+    %% actualitzem el valor de l'índex dels caràcters compostos en un paràgraf
+    dup length iCar add /iCar exch def
+
+    show
+    /nmot 0 def
+    256 string /mot exch def  %% mai hi haurà un mot tant llarg
+    mot /NullEncode filter /fotli exch def
+   }
+   {  %% estem component un mot
+    fotli exch write
+    aElDarrerMot add /aElDarrerMot exch def  %% calculem l'ample del mot compost
+    nmot 1 add /nmot exch def  %% sumador del nombre de caràcters que té cada mot que componem
+   }ifelse
+
+  }ifelse
+ }  %% el proc per cshow s'aplica a cada glif de la cadena
+
+ %% el text a compondre és sencer dins una cadena
+ %%(Esdevinguerem_miops_d'una_vella_causa_perduda,_pero_malgrat_tot_encara_ben_present_i_amb_grans_possibilitats_d'esdevenir)
+ eSCRiu
+
+ cshow  %% operador componedor per composite fonts (CID, etc)
+
+ %% sempre ens queda per fer el darrer mot del paràgraf...
+ fotli closefile mot 0 nmot getinterval  %% sense trepitjar cap null
+ currentpoint dup /YdarrerPgraf exch def moveto show
+
+ %% NO afegim cap línia en blanc entre paràgrafs
+ %% nL 0 add /nL exch def
+
+ rengs maxRengs eq
+ {  %% som final de columna
+  %% desem el valor d'ample de la primera columna al seu inici +els valors màxims Y de dalt i baix
+  iCOL iniCOL eq
+  {
+   /imaxCOL maxCOL def
+   /maxYbaix mY def
+   /maxYdalt ALT 28.35 mul marGes sub CAPinfo 28.35 mul sub def
+  }if
+
+  %% un truc per mantenir la interactivitat al prompt és treure una string buida?
+  ()print flush
+  iCOL dup 3 string cvs print flush ( columnes\n)print flush 1 add /iCOL exch def
+
+  /rengs 0 def
+  %% just el tram de text que no hem compost i cal passar a la pàgina següent
+  eSCRiu dup length iCar sub iCar exch getinterval dup
+%  (2)==
+  %% purgat de nulls al darrer mot
+  mot 0 (\000) /SubFileDecode filter 256 string readstring pop
+  %% si les dues strings són idèntiques és que ja s'han escrit i llavors ja hem acabat
+  eq
+  {
+   /xEscriure false def
+   %% eliminem la cadena a l'stack doncs ja l'hem compost
+   pop
+  }
+  {
+   /xEscriure true def
+  }ifelse
+  exit  %% sortim del loop de columna
+ }
+ {  %% actualitzem el nombre de rengs pel canvi de columna
+  rengs 1 add /rengs exch def
+ }ifelse
+ %% actualitzem la posició y
+ YdarrerPgraf iL sub /mY exch def
+
+ %% hem acabat l'array de categoria?
+ iParagraf maxAtextXparagraf ge
+ {  %% soluciona la desaparició del darrer paràgraf a l'acabar l'obra
+  /iParagraf 0 def  %% index de captura de text per paràgraf (víctima) per categoria
+  (0)==
+
+  %% l'algorisme per pintar el fons de les columnes és vàlid per tota mena de combinacions
+  %% treballarem amb 4 o 8 coordenades per fer el fons de categoria
+  iCOL iniCOL eq
+  {  %% 4 coordenades, si la categoria que no va més enllà d'1 sola columna
+   /polifons 4 array def  %% màxim de coordenades del polígon que dibuixarà el fons per categoria 
+   polifons 0 ixyCTGR put  %% x,y del moveto
+   polifons 1 [ mX YdarrerPgraf ] put  %% x,y del primer lineto
+   polifons 2 [ mX maxCOL add crndll sub YdarrerPgraf ] put  %% x,y del segon lineto
+   polifons 3 [ mX maxCOL add crndll sub ixyCTGR 1 get ] put  %% x,y del tercer moveto
+   gsave
+   %% + transparències
+   /DeviceCMYK setcolorspace
+   %%[ /ca 1 /CA 1 /BM /Multiply /SetTransparency pdfmark
+   %% aquest es el parametre equivalent amb GS de la crida pdfmark anterior...
+   /Multiply  %% amb CMYK podem xafar color sobre negre de forma que el negre es vegi
+   %% /Screen  %% amb RGB podem xafar negre sobre blanc de forma que el blanc es vegi
+   .setblendmode 1 .setopacityalpha
+   polifons 0 get aload pop moveto
+   1 1 3
+   {
+    polifons exch get aload pop lineto
+   }for
+   closepath
+   colorCTGRS araCTGR get exec
+   gruixVora setlinewidth  %% juguem amb els marges
+   gsave stroke grestore fill  %% amb 1 sol color ens podem permetre perfilar treballant amb transparències
+   grestore
+  }
+  {  %% 8 coordenades, si la categoria abraça 2 columnes o més
+   /polifons 8 array def  %% màxim de coordenades del polígon que dibuixarà el fons per categoria
+   polifons 0 [ ixyCTGR aload pop 2 add exch 2 sub exch ] put  %% x,y del moveto
+   %% no podem perfilar i treballar amb transparències si pintem amb un color no pur, doncs el filet trepitja la taca!
+   %% hem de donar marges al polígon afegint o traient gruix (2 add/2 sub)
+   polifons 1
+   [
+    ixyCTGR 0 get 2 sub
+    maxYbaix 2 sub
+   ] put  %% x,y del primer lineto
+   polifons 2
+   [
+    mX crndll sub 2 add
+    maxYbaix 2 sub
+   ] put  %% x,y del segon lineto
+   polifons 3
+   [
+    mX crndll sub 2 add
+    YdarrerPgraf 2 sub
+   ] put  %% x,y del tercer lineto
+   polifons 4
+   [
+    mX maxCOL add 2 add
+    YdarrerPgraf 2 sub
+   ] put  %% x,y del quart lineto
+   polifons 5
+   [
+    mX maxCOL add 2 add
+    maxYdalt cOs add 2 add
+   ] put  %% x,y del cinquè lineto
+   polifons 6
+   [
+    ixyCTGR 0 get imaxCOL add 2 sub
+    maxYdalt cOs add 2 add
+   ] put  %% x,y del sisè lineto
+   polifons 7
+   [
+    ixyCTGR 0 get imaxCOL add 2 sub
+    ixyCTGR 1 get 2 add
+   ] put  %% x,y del setè lineto
+   gsave
+   %% + transparències
+   /DeviceCMYK setcolorspace
+   %%[ /ca 1 /CA 1 /BM /Multiply /SetTransparency pdfmark
+   %% aquest es el parametre equivalent amb GS de la crida pdfmark anterior...
+   /Multiply  %% amb CMYK podem xafar color sobre negre de forma que el negre es vegi
+   %% /Screen  %% amb RGB podem xafar negre sobre blanc de forma que el blanc es vegi
+   .setblendmode 1 .setopacityalpha
+   polifons 0 get aload pop moveto
+   1 1 7
+   {
+    polifons exch get aload pop lineto
+   }for
+   closepath
+   colorCTGRS araCTGR get exec
+   %% no podem perfilar i treballar amb transparències si pintem amb un color no pur, doncs el filet trepitja la taca!
+   %% gruixVora setlinewidth  %% juguem amb els marges
+   %% gsave stroke grestore
+   fill
+   grestore
+  }ifelse
+
+  %%TEST gomet final fons categoria
+  %% gsave
+  %% 0 0 1 0 setcolor
+  %% mX 2.5 sub mY 2.5 sub  10 10 rectfill
+  %% grestore
+
+  %% total d'executades per categoria
+  (\n>>> executades: )print flush iEXE 12 string cvs print flush (\n)print flush
+  tEXE iEXE add /tEXE exch def  %% comptador total d'executades
+  ARAe iEXE def  %% desem el nombre total d'execuates per categoria
+
+  exit
+
+ }if
+
+}bind def  %% componedor amb l'operador cshow
+
+
+(aplanatCaixaBaixa.ps) (r) file cvx exec
+/aplana exch def  %% desem una vegada l'array aplanadora d'accents a caixa baixa per l'ordre alfabètic de caplletres
+/arAlf 0 def  %% per detectar en canvi alfabètic i fer les caplletres
+
+%% font pel text de totes les víctimes
+/instanciaCosDeTextVictimesMM  %% literal per definir la instància concreta que generem
+%% /MinionMM findfont  %% aquí substituïm la crida original pel seu diccionari ja normalitzat a WinAnsi...
+MyMMionari
+%MiMMionari
+%AsMMionari
+%AfMMionari
+dup begin  %% entrem dins el diccionari de la MM per poder cridar els procediments NormalizeDesignVector i ConvertDesignVector
+[  %# array del vector que treballarà makeblendedfont
+ %% el seu ordre (fixat per /BlendAxisTypes) i els seus valors possibles (fixats per /BlendDesignMap)
+ 215 300  %% Myriad MM Italic necessitem obligatòriament tantes dades vàlides com eixos dinàmics de la MM
+ % 345 450 6  %% Minion MM Roman
+ % 50 50  %% Adobe Sans MM
+ % 110 100  %% Adobe Serif MM
+ %% aquests dos procediments, i per aquest ordre, generen les dades necesàries del vector dins l'array
+ NormalizeDesignVector  %% normalitza les dades de cada eix mestre en valors entre 0 i 1
+ ConvertDesignVector  %% genera les dades finals pel seu ús dins la matriu de l'array per a makeblendedfont
+] end
+makeblendedfont
+definefont  %% fixem la font en memòria
+/CosDeTextVictimes exch def  %% diccionari amb la instància creada
+
+%% font per les víctimes executades
+/instanciaVictimesExecutadesMM  %% literal per definir la instància concreta que generem
+%% /MinionMM findfont  %% aquí substituïm la crida original pel seu diccionari ja normalitzat a WinAnsi...
+MyMMionari
+%MiMMionari
+%AsMMionari
+%AfMMionari
+dup begin  %% entrem dins el diccionari de la MM per poder cridar els procediments NormalizeDesignVector i ConvertDesignVector
+[  %# array del vector que treballarà makeblendedfont
+ %% el seu ordre (fixat per /BlendAxisTypes) i els seus valors possibles (fixats per /BlendDesignMap)
+ 300 300  %% Myriad MM Italic necessitem obligatòriament tantes dades vàlides com eixos dinàmics de la MM
+ % 345 450 6  %% Minion MM Roman
+ % 50 50  %% Adobe Sans MM
+ % 110 100  %% Adobe Serif MM
+ %% aquests dos procediments, i per aquest ordre, generen les dades necesàries del vector dins l'array
+ NormalizeDesignVector  %% normalitza les dades de cada eix mestre en valors entre 0 i 1
+ ConvertDesignVector  %% genera les dades finals pel seu ús dins la matriu de l'array per a makeblendedfont
+] end
+makeblendedfont
+definefont  %% fixem la font en memòria
+/VictimesExecutades exch def  %% diccionari amb la instància creada
+
+%% font per les caplletres d'ordre alfabètic
+/instanciaCaplletraAlfabeticMM  %% literal per definir la instància concreta que generem
+%% /MinionMM findfont  %% aquí substituïm la crida original pel seu diccionari ja normalitzat a WinAnsi...
+MyMMionari
+%MiMMionari
+%AsMMionari
+%AfMMionari
+dup begin  %% entrem dins el diccionari de la MM per poder cridar els procediments NormalizeDesignVector i ConvertDesignVector
+[  %# array del vector que treballarà makeblendedfont
+ %% el seu ordre (fixat per /BlendAxisTypes) i els seus valors possibles (fixats per /BlendDesignMap)
+ 700 830  %% Myriad MM Italic necessitem obligatòriament tantes dades vàlides com eixos dinàmics de la MM
+ % 345 450 6  %% Minion MM Roman
+ % 50 50  %% Adobe Sans MM
+ % 110 100  %% Adobe Serif MM
+ %% aquests dos procediments, i per aquest ordre, generen les dades necesàries del vector dins l'array
+ NormalizeDesignVector  %% normalitza les dades de cada eix mestre en valors entre 0 i 1
+ ConvertDesignVector  %% genera les dades finals pel seu ús dins la matriu de l'array per a makeblendedfont
+] end
+makeblendedfont
+definefont  %% fixem la font en memòria
+/CaplletraAlfabetic exch def  %% diccionari amb la instància creada
+
+/rengs 0 def  %% comptador de rengs de text per columna
+
+/iParagraf 0 def  %% index de captura de text per paràgraf (víctima) per categoria
+/iniParagraf
+{  %% inicialitzem per cada paràgraf
+ mX mY moveto  %% posició inicial de la primera línia del paràgraf
+ 256 string /mot exch def  %% mai hi haurà un mot tant llarg
+ mot /NullEncode filter /fotli exch def  %% cadena+fitxer d'escriptura d'un mot
+ 0 /faLinia exch def  %% ample actual de la línia
+ 0 /nmot exch def  %% nombre de caràcters que té cada mot que componem
+ 0 /aElDarrerMot exch def  %% ample del darrer mot
+ 0 /nL exch def  %% nombre de línies que hem compost
+ /iCar 0 def  %% índex dels caràcters compostos en un paràgraf
+}bind def
+
+/xEscriure false def  %% al fer el canvi ha quedat text del darrer paràgraf per escriure?
+
+%% valors a escala, per no superar els 'implemetation limits' del format de pàgina d'un pdf
+%% ara al 50%, l'impressor a la reproducció final ja ho ampliarà
+%% ample i alt final de la pancarta
+/AMPLE 500 def  %# valor en cm (més entenedor) perquè després ja els multipliquem per 28.25 per passar-los a punts
+/ALT 75.5 def  %# valor en cm (més entenedor) perquè després ja els multipliquem per 28.25 per passar-los a punts
+/CAPinfo ALT .04 mul def  %# valor de la capçalera informativa (a dalt i baix)
+%% valors inicials fixos (aquests en punts) per alimentar el componedor (línies de dalt a baix i columnes d'esquerra a dreta)
+/cOs 5 def  %# cos de treball
+/iL cOs 1.2 mul def  %# interliniat al 120% del cos
+/marGes 50 def  %# marges fixos de la pancarta esquerra dalt i baix
+/mX marGes 2 mul def  %# posició inicial X d'inici de línia
+/mY ALT 28.35 mul marGes sub CAPinfo 28.35 mul sub def  %# posició inicial Y de la primera línia
+/maxL cOs 12.20 mul def  %# ample màxim de línia/columna al 1220% del cos
+/gruixVora 4 def  %# gruix de les vores per la taca de color per categoria
+/maxCOL 0 def  %% valor màxim assolit per cada columna (així podem aprofitar al màxim l'amplada)
+/crndll cOs 2.5 mul def  %# corondell
+/iCOL 1 def  %% comptador pel prompt de columnes compostes
+
+%% treballem a escala, doncs no podem superar el format aproximat de 5x5 metres (14125 x 14125 punts)
+%% genera el format de pàgina, les creus de tall i els bbox de treball
+(P7upCap.ps) (r) file cvx exec
+
+%% fem el càlcul de quants rengs per columna hi caben
+/maxRengs 0 def  %% rengs màxims per columna x interliniat iL
+mY iL neg marGes CAPinfo 28.35 mul add
+{
+ pop maxRengs 1 add /maxRengs exch def
+}for
+
+CosDeTextVictimes cOs scalefont setfont  %% cos de treball NO podem cridar-ho amb selectfont!
+
+%% translate a 0,0 TrimBox
+pinca dup translate
+
+[  %# arrays de víctimes per cateegories escrites a disc via llegeixCSVopenData_escriuArrays.ps
+ [
+  (\n\n--- Persones Físiques Dones ---\n)
+  (/Users/femfum/OnEtsOncleGuillem/parlament/ReparacioJuridicaVictimes36-77/faStJaume/donesRepresaliades_010218.txt)
+  1
+  /rD  %% variable per desar-hi els registres totals de dones
+  /eD  %% variable per desar-hi els registres de dones executades
+ ]
+ [
+  (\n\n--- Persones Físiques Homes ---\n)
+  (/Users/femfum/OnEtsOncleGuillem/parlament/ReparacioJuridicaVictimes36-77/faStJaume/homesRepresaliats_010218.txt)
+  2
+  /rH  %% variable per desar-hi els registres totals d'homes
+  /eH  %% variable per desar-hi els registres d'homes executats
+ ]
+ [
+  (\n\n--- Persones Jurídiques ---\n)
+  (/Users/femfum/OnEtsOncleGuillem/parlament/ReparacioJuridicaVictimes36-77/faStJaume/personesJuridiquesRepresaliades_010218.txt)
+  0
+  /rPJ  %% variable per desar-hi els registres totals de persones jurídiques
+  /ePJ  %% variable per desar-hi els registres de persones jurídiques executades
+ ]
+]  %% llegit via forall
+
+[
+ {0 0 1 0 setcolor}  %% 0 Persones Jurídiques
+ {.2 .2 0 0 setcolor}  %% 1 Persones Físiques Dones
+ {0 0 0 0 setcolor}  %% 2 Persones Físiques Homes
+] /colorCTGRS exch def
+
+/iAcategories 0 def  %% comptador de categories
+/tRGSTRS 0 def  %% comptador de registres totals
+/tEXE 0 def  %% comptador total d'executades
+
+%% aquí hi van les capçaleres +url estàtiques
+%% capçalera de baix
+gsave
+.4 .4 .4 1 setcolor
+sangs neg  %% x
+sangs neg  %% y
+xTbox pinca add  %% ample
+CAPinfo 28.35 mul marGes add  %% alt
+rectfill  %% taca negra baix
+0 0 0 0 setcolor
+%/MyriadPro-Bold
+MyPBionari CAPinfo 28.35 mul 2 sub scalefont setfont
+marGes 2 mul  %% x
+sangs 2 mul  %% y
+moveto (Parlament de Catalunya · LLEI 11/2017, del 4 de juliol, de reparació jurídica de les víctimes del franquisme) show
+0 1 1 0 setcolor
+currentpoint pop sangs 3 mul add  %% x
+sangs 2 mul  %% y
+CosDeTextVictimes CAPinfo 28.35 mul 2 sub scalefont setfont
+moveto (executades) show
+.2 .2 0 0 setcolor
+currentpoint pop sangs 3 mul add CAPinfo 28.35 mul 2 div add dup /xVA exch def  %% centre x
+sangs 4 mul  %% centre y
+newpath CAPinfo 28.35 mul 2 div 0 360 arc fill  %% rodona groga
+MyPBionari CAPinfo 28.35 mul 2 sub scalefont setfont
+xVA CAPinfo 28.35 mul add sangs 3 div sub  %% x
+sangs 2 mul  %% y
+moveto (dones) show
+0 0 0 0 setcolor
+currentpoint pop CAPinfo 28.35 mul add dup /xVA exch def  %% centre x
+sangs 4 mul  %% centre y
+newpath CAPinfo 28.35 mul 2 div 0 360 arc fill  %% rodona blanca
+xVA CAPinfo 28.35 mul add sangs 3 div sub  %% x
+sangs 2 mul  %% y
+moveto (homes) show
+0 0 1 0 setcolor
+currentpoint pop CAPinfo 28.35 mul add dup /xVA exch def  %% centre x
+sangs 4 mul  %% centre y
+newpath CAPinfo 28.35 mul 2 div 0 360 arc fill  %% rodona cyan
+xVA CAPinfo 28.35 mul add sangs 3 div sub  %% x
+sangs 2 mul  %% y
+moveto (persones jurídiques) show
+currentpoint exch sangs 3 mul add exch moveto  %% intermezzo
+0 0 0 0 setcolor
+(Parlament de Catalunya · LLEI 11/2017, del 4 de juliol, de reparació jurídica de les víctimes del franquisme) show
+0 1 1 0 setcolor
+currentpoint pop sangs 3 mul add  %% x
+sangs 2 mul  %% y
+CosDeTextVictimes CAPinfo 28.35 mul 2 sub scalefont setfont
+moveto (executades) show
+.2 .2 0 0 setcolor
+currentpoint pop sangs 3 mul add CAPinfo 28.35 mul 2 div add dup /xVA exch def  %% centre x
+sangs 4 mul  %% centre y
+newpath CAPinfo 28.35 mul 2 div 0 360 arc fill  %% rodona groga
+MyPBionari CAPinfo 28.35 mul 2 sub scalefont setfont
+xVA CAPinfo 28.35 mul add sangs 3 div sub  %% x
+sangs 2 mul  %% y
+moveto (dones) show
+0 0 0 0 setcolor
+currentpoint pop CAPinfo 28.35 mul add dup /xVA exch def  %% centre x
+sangs 4 mul  %% centre y
+newpath CAPinfo 28.35 mul 2 div 0 360 arc fill  %% rodona blanca
+xVA CAPinfo 28.35 mul add sangs 3 div sub  %% x
+sangs 2 mul  %% y
+moveto (homes) show
+0 0 1 0 setcolor
+currentpoint pop CAPinfo 28.35 mul add dup /xVA exch def  %% centre x
+sangs 4 mul  %% centre y
+newpath CAPinfo 28.35 mul 2 div 0 360 arc fill  %% rodona cyan
+xVA CAPinfo 28.35 mul add sangs 3 div sub  %% x
+sangs 2 mul  %% y
+moveto (persones jurídiques) show
+currentpoint exch sangs 3 mul add exch moveto  %% intermezzo
+0 0 0 0 setcolor
+(Parlament de Catalunya · LLEI 11/2017, del 4 de juliol,) show
+grestore
+
+%% capçalera de dalt
+gsave
+.4 .4 .4 1 setcolor
+sangs neg  %% x
+yTbox CAPinfo 28.35 mul marGes add sub sangs add  %% y
+xTbox pinca add  %% ample
+CAPinfo 28.35 mul marGes add  %% alt
+rectfill  %% taca negra dalt
+%0 1 1 0 setcolor
+marGes 2 mul  %% x
+yTbox CAPinfo 28.35 mul 2 div marGes add sub sangs add  %% y
+%CosDeTextVictimes CAPinfo 28.35 mul 2 sub scalefont setfont
+%moveto (executades) show
+%0 0 1 0 setcolor
+%currentpoint pop sangs 3 mul add CAPinfo 28.35 mul 2 div add dup /xVA exch def  %% centre x
+%newpath yTbox CAPinfo 28.35 mul 2 div marGes add sub sangs 2 mul add  %% centre y
+%CAPinfo 28.35 mul 2 div 0 360 arc fill  %% rodona groga
+%MyPBionari CAPinfo 28.35 mul 2 sub scalefont setfont
+%xVA CAPinfo 28.35 mul add sangs 3 div sub  %% x
+%yTbox CAPinfo 28.35 mul 2 div marGes add sub sangs add  %% y
+%moveto (dones) show
+%0 0 0 0 setcolor
+%currentpoint pop CAPinfo 28.35 mul add dup /xVA exch def  %% centre x
+%yTbox CAPinfo 28.35 mul 2 div marGes add sub sangs 2 mul add  %% centre y
+%newpath CAPinfo 28.35 mul 2 div 0 360 arc fill  %% rodona blanca
+%xVA CAPinfo 28.35 mul add sangs 3 div sub  %% x
+%yTbox CAPinfo 28.35 mul 2 div marGes add sub sangs add  %% y
+%moveto (homes) show
+%1 0 0 0 setcolor
+%currentpoint pop CAPinfo 28.35 mul add dup /xVA exch def  %% centre x
+%yTbox CAPinfo 28.35 mul 2 div marGes add sub sangs 2 mul add  %% centre y
+%newpath CAPinfo 28.35 mul 2 div 0 360 arc fill  %% rodona cyan
+%xVA CAPinfo 28.35 mul add sangs 3 div sub  %% x
+%yTbox CAPinfo 28.35 mul 2 div marGes add sub sangs add  %% y
+%moveto (persones jurídiques) show
+%currentpoint exch sangs 3 mul add exch moveto  %% intermezzo
+%0 0 0 0 setcolor
+%(Llistat judicis franquistes anul·lats pel Parlament de Catalunya) show
+%0 1 1 0 setcolor
+%currentpoint pop sangs 3 mul add  %% x
+%yTbox CAPinfo 28.35 mul 2 div marGes add sub sangs add  %% y
+%CosDeTextVictimes CAPinfo 28.35 mul 2 sub scalefont setfont
+%moveto (executades) show
+%0 0 1 0 setcolor
+%currentpoint pop sangs 3 mul add CAPinfo 28.35 mul 2 div add dup /xVA exch def  %% centre x
+%newpath yTbox CAPinfo 28.35 mul 2 div marGes add sub sangs 2 mul add  %% centre y
+%CAPinfo 28.35 mul 2 div 0 360 arc fill  %% rodona groga
+%MyPBionari CAPinfo 28.35 mul 2 sub scalefont setfont
+%xVA CAPinfo 28.35 mul add sangs 3 div sub  %% x
+%yTbox CAPinfo 28.35 mul 2 div marGes add sub sangs add  %% y
+%moveto (dones) show
+%0 0 0 0 setcolor
+%currentpoint pop CAPinfo 28.35 mul add dup /xVA exch def  %% centre x
+%yTbox CAPinfo 28.35 mul 2 div marGes add sub sangs 2 mul add  %% centre y
+%newpath CAPinfo 28.35 mul 2 div 0 360 arc fill  %% rodona blanca
+%xVA CAPinfo 28.35 mul add sangs 3 div sub  %% x
+%yTbox CAPinfo 28.35 mul 2 div marGes add sub sangs add  %% y
+%moveto (homes) show
+%1 0 0 0 setcolor
+%currentpoint pop CAPinfo 28.35 mul add dup /xVA exch def  %% centre x
+%yTbox CAPinfo 28.35 mul 2 div marGes add sub sangs 2 mul add  %% centre y
+%newpath CAPinfo 28.35 mul 2 div 0 360 arc fill  %% rodona cyan
+%xVA CAPinfo 28.35 mul add sangs 3 div sub  %% x
+%yTbox CAPinfo 28.35 mul 2 div marGes add sub sangs add  %% y
+%moveto (persones jurídiques) show
+%currentpoint exch sangs 3 mul add exch moveto  %% intermezzo
+
+0 0 0 0 setcolor
+MyPBionari CAPinfo 28.35 mul 2 sub scalefont setfont
+moveto (Llistat de judicis franquistes anu) show currentpoint pop /lx1 exch def (ll) show currentpoint /ly exch def lx1 sub
+MyPBionari CAPinfo 28.35 mul 42 sub scalefont setfont
+(·) stringwidth pop sub 2 div lx1 add currentpoint exch /lx2 exch def 15 add moveto (·) show lx2 ly moveto
+MyPBionari CAPinfo 28.35 mul 2 sub scalefont setfont
+(ats pel Parlament de Catalunya) show
+
+currentpoint exch sangs 3 mul add exch moveto  %% intermezzo
+(·) show
+currentpoint exch sangs 3 mul add exch moveto  %% intermezzo
+
+(Llistat de judicis franquistes anu) show currentpoint pop /lx1 exch def (ll) show currentpoint /ly exch def lx1 sub
+MyPBionari CAPinfo 28.35 mul 42 sub scalefont setfont
+(·) stringwidth pop sub 2 div lx1 add currentpoint exch /lx2 exch def 15 add moveto (·) show lx2 ly moveto
+MyPBionari CAPinfo 28.35 mul 2 sub scalefont setfont
+(ats pel Parlament de Catalunya) show
+
+currentpoint exch sangs 3 mul add exch moveto  %% intermezzo
+(·) show
+currentpoint exch sangs 3 mul add exch moveto  %% intermezzo
+
+(Llistat de judicis franquistes anu) show currentpoint pop /lx1 exch def (ll) show currentpoint /ly exch def lx1 sub
+MyPBionari CAPinfo 28.35 mul 42 sub scalefont setfont
+(·) stringwidth pop sub 2 div lx1 add currentpoint exch /lx2 exch def 15 add moveto (·) show lx2 ly moveto
+MyPBionari CAPinfo 28.35 mul 2 sub scalefont setfont
+(ats pel Parlament de Catalunya) show
+
+currentpoint exch sangs 3 mul add exch moveto  %% intermezzo
+(·) show
+currentpoint exch sangs 3 mul add exch moveto  %% intermezzo
+
+(Llistat de judicis franquistes anu) show currentpoint pop /lx1 exch def (ll) show currentpoint /ly exch def lx1 sub
+MyPBionari CAPinfo 28.35 mul 42 sub scalefont setfont
+(·) stringwidth pop sub 2 div lx1 add currentpoint exch /lx2 exch def 15 add moveto (·) show lx2 ly moveto
+MyPBionari CAPinfo 28.35 mul 2 sub scalefont setfont
+(ats pel Parlament de Catalunya) show
+
+currentpoint exch sangs 3 mul add exch moveto  %% intermezzo
+(·) show
+currentpoint exch sangs 3 mul add exch moveto  %% intermezzo
+
+(Llistat de judicis franquistes anu) show currentpoint pop /lx1 exch def (ll) show currentpoint /ly exch def lx1 sub
+MyPBionari CAPinfo 28.35 mul 42 sub scalefont setfont
+(·) stringwidth pop sub 2 div lx1 add currentpoint exch /lx2 exch def 15 add moveto (·) show lx2 ly moveto
+MyPBionari CAPinfo 28.35 mul 2 sub scalefont setfont
+(ats pel Parlament de Catalunya) show
+
+currentpoint exch sangs 3 mul add exch moveto  %% intermezzo
+(·) show
+currentpoint exch sangs 3 mul add exch moveto  %% intermezzo
+
+(Llistat de judicis franquistes anu) show currentpoint pop /lx1 exch def (ll) show currentpoint /ly exch def lx1 sub
+MyPBionari CAPinfo 28.35 mul 42 sub scalefont setfont
+(·) stringwidth pop sub 2 div lx1 add currentpoint exch /lx2 exch def 15 add moveto (·) show lx2 ly moveto
+MyPBionari CAPinfo 28.35 mul 2 sub scalefont setfont
+(ats pel Parlament de Catalunya) show
+
+%0 1 1 0 setcolor
+%currentpoint pop sangs 3 mul add  %% x
+%yTbox CAPinfo 28.35 mul 2 div marGes add sub sangs add  %% y
+%CosDeTextVictimes CAPinfo 28.35 mul 2 sub scalefont setfont
+%moveto (executades) show
+%0 0 1 0 setcolor
+%currentpoint pop sangs 3 mul add CAPinfo 28.35 mul 2 div add dup /xVA exch def  %% centre x
+%newpath yTbox CAPinfo 28.35 mul 2 div marGes add sub sangs 2 mul add  %% centre y
+%CAPinfo 28.35 mul 2 div 0 360 arc fill  %% rodona groga
+%MyPBionari CAPinfo 28.35 mul 2 sub scalefont setfont
+%xVA CAPinfo 28.35 mul add sangs 3 div sub  %% x
+%yTbox CAPinfo 28.35 mul 2 div marGes add sub sangs add  %% y
+%moveto (dones) show
+%0 0 0 0 setcolor
+%currentpoint pop CAPinfo 28.35 mul add dup /xVA exch def  %% centre x
+%yTbox CAPinfo 28.35 mul 2 div marGes add sub sangs 2 mul add  %% centre y
+%newpath CAPinfo 28.35 mul 2 div 0 360 arc fill  %% rodona blanca
+%xVA CAPinfo 28.35 mul add sangs 3 div sub  %% x
+%yTbox CAPinfo 28.35 mul 2 div marGes add sub sangs add  %% y
+%moveto (homes) show
+%1 0 0 0 setcolor
+%currentpoint pop CAPinfo 28.35 mul add dup /xVA exch def  %% centre x
+%yTbox CAPinfo 28.35 mul 2 div marGes add sub sangs 2 mul add  %% centre y
+%newpath CAPinfo 28.35 mul 2 div 0 360 arc fill  %% rodona cyan
+%xVA CAPinfo 28.35 mul add sangs 3 div sub  %% x
+%yTbox CAPinfo 28.35 mul 2 div marGes add sub sangs add  %% y
+%moveto (persones jurídiques) show
+grestore
+
+{  %% stopped
+
+{  %% forall componedora del llençol sencer
+ dup 2 get /araCTGR exch def  %% servirà per configurar el color de fons a pintar i el control dels totals
+ dup 0 get print flush  %% llistem el nom de la nova categoria
+
+ %% TEST gomet d'inici fons categoria
+ iCOL /iniCOL exch def
+ %% gsave
+ %% 0 1 0 0 setcolor
+ %% mX 2.5 sub mY 2.5 sub  10 10 rectfill
+ %% grestore
+ [ mX mY cOs add ] /ixyCTGR exch def  %% x,y d'inici de categoria
+ 
+ %% víctimes categoritzades
+ dup 1 get (r) file cvx exec
+ %% array de víctimes per categoria
+ /iEXE 0 def  %% comptador a zero d'executades
+ dup length /maxAtextXparagraf exch def
+ (>>> registres: )print flush maxAtextXparagraf 12 string cvs print flush (\n)print flush
+ tRGSTRS maxAtextXparagraf add /tRGSTRS exch def  %% comptador de registres totals
+ /AtextXparagraf exch def
+ dup 3 get maxAtextXparagraf def  %% desem els registres totals per categoria
+ 4 get /ARAe exch def  %% desem la variable d'executades que toca
+ {  %% loop componedora de tota la pancarta
+  {  %% loop componedora per columna
+   iniParagraf  %% inicialitzem els valors per a cada paràgraf
+
+   %% queda res per escriure del darrer paràgraf extret?
+   xEscriure
+   {
+    /xEscriure false def
+    % iParagraf 1 sub /iParagraf exch def
+   }
+   {
+    AtextXparagraf iParagraf get
+    dup 0 get  %% nom de la víctima
+
+    %% caplletres d'ordre alfabètic
+    dup 0 get  %% extraiem el valor decimal del primer caràcter
+    %% l'aplanem a caixa baixa (i si la volem a alta només cal restar-hi 32)
+    aplana exch get
+    dup
+    %% valor decimal del caràcter alfabètic actual (se suposa que el CSV ja és ordenat)
+    arAlf ne
+    {  %% voldrà dir que canviem de caràcter en l'ordre alfabètic
+     dup /arAlf exch def
+     32 sub  %% el pintem a caixa alta
+     1 string dup 3 -1 roll 0 exch put
+     gsave
+     %% font per la caplletra d'ordre alfabètic
+     CaplletraAlfabetic cOs scalefont setfont  %% cos de treball NO podem cridar-ho amb selectfont!
+     dup ==  %% llistem
+     mX mY moveto show
+     currentpoint iL sub /mY exch def pop
+     grestore
+     mX mY moveto  %% no hipotequem el currentpoint
+     rengs 1 add /rengs exch def
+     %% stop quan un canvi alfabètic coincideix amb el final d'una columna
+     rengs maxRengs ge
+     {
+      (\n\n <<<< EP! el canvi de columna trepitja una caplletra ...pleguem!\n\n)print flush quit
+     }if
+    }
+    {
+     pop
+    }ifelse
+
+    iParagraf 1 add /iParagraf exch def
+   }ifelse
+
+   /eSCRiu exch def  %% capturem el text del paràgraf (nou o una cua de la pàgina anterior)
+
+   1 get  %% executada?
+   {
+    0 1 1 0 setcolor
+    %% font per víctimes executades
+    VictimesExecutades cOs scalefont setfont  %% cos de treball NO podem cridar-ho amb selectfont!
+    iEXE 1 add /iEXE exch def
+   }if
+
+   BanderaDreta_Cshow  %% componedora
+
+   %% font de text per a totes les víctimes
+   CosDeTextVictimes cOs scalefont setfont  %% cos de treball NO podem cridar-ho amb selectfont!
+   0 0 0 1 setcolor
+
+  }loop  %% componedora per columna
+
+  %% si hem sortit del loop anterior és que hem exhaurit una columna
+  %% o hem acabat l'array per categoria
+  iParagraf 0 eq  %% si l'índex de captura de text per paràgraf val zero és que hem exhaurit la categoria
+  {  %% seguim a la mateixa columna i canviem de categoria
+   iAcategories 1 add /iAcategories exch def
+
+   currentpoint iL 3 mul sub /mY exch def
+   mY moveto  %% no hipotequem el currentpoint
+   rengs 2 add /rengs exch def
+
+   %% (...pleguem...) ==
+   exit  %% sortim oi?
+  }
+  {  %% canviem de columna
+   /mY ALT 28.35 mul marGes sub CAPinfo 28.35 mul sub def  %# NOVA posició inicial Y de la primera línia
+   /mX mX crndll add
+   %% maxL  %# treballem amb una amplada fixa de columna
+   maxCOL  %% treballem amb una amplada variable per columna per aprofitar al màxim el format
+   add def  %% NOVA posició X d'inici de línia
+
+   /maxCOL 0 def  %% valor màxim assolit per cada columna (així podem aprofitar al màxim l'amplada)
+  }ifelse
+
+  %% ens hem menjat l'ample de la pancarta?
+  mX
+  %% maxL  %# treballem amb una amplada fixa de columna
+  maxCOL add xTbox marGes sub gt
+  {
+   ( <<<< hem exhaurit l'ample de la pancarta!) == quit
+  }if
+ }loop  %% componedora de tota la pancarta
+
+}forall  %% componedora del llençol sencer
+
+}stopped
+{
+ AtextXparagraf iParagraf 1 sub get ==
+ (\n\n <<<< EP! el canvi de columna trepitja un nom de doble línia ...pleguem!\n\n)print flush quit
+}if
+
+%% URL fixa de descàrrega de la darrera versió actualitzada de la pancarta i resistres totals
+gsave
+0 1 1 0 setcolor
+CosDeTextVictimes CAPinfo 28.35 mul 42 sub scalefont setfont
+xTbox marGes sub CAPinfo 28.35 mul marGes add translate 90 rotate
+0 marGes 2 div neg moveto (http://dom.cat/adecidir) show
+0 0 0 1 setcolor
+currentpoint exch marGes add dup /araX exch def exch moveto
+rPJ 32 string cvs show ( persones jurídiques) show
+currentpoint CAPinfo 28.35 mul 42 sub add exch pop araX exch moveto
+rH 32 string cvs show ( homes # executats ) show eH 32 string cvs show
+currentpoint CAPinfo 28.35 mul 42 sub add exch pop araX exch moveto
+rD 32 string cvs show ( dones # executades ) show eD 32 string cvs show
+grestore
+
+showpage
+
+%% totals
+(\n\n>>> TOTAL registres: )print flush tRGSTRS 12 string cvs print flush %% total registres
+(\n>>> TOTAL d'executades: )print flush tEXE 12 string cvs print flush (\n\n)print flush %% total d'executades
+
+%# Docinfo (més endavant: claus privades i preferències d'obertura si calgués)
+mark
+/Author (Mesa de Catalunya d'Entitats Memorialistes / http://mesadecatalunya.blogspot.com)
+/araCDstring (D:) def  %% cadena inicial per la Creation/Mod Date
+%% Detecta si l'interpret PS duu el recurs %Calendar% (p.e. GS)
+%% si el duu llavors farceix una cadena segons la sintaxi del Creation Date d'AcrobatPDF
+(%Calendar%) /IODevice resourcestatus  %% existeix el recurs del calendari+rellotge?
+{  %% existeix! (probablement siguem dins GS)
+ pop pop  %% ens carreguem les altres dues respostes del query
+ (%Calendar%) currentdevparams  %%{== ==}forall quit
+ dup /Running get
+ {  %% suposem q per refiar-nos del calendari aquesta entrada ha d'estar a true
+  dup /Year get
+  4 string cvs dup length araCDstring length dup /afegit exch def add string dup
+  0 araCDstring putinterval dup afegit 4 -1 roll putinterval /araCDstring exch def
+  dup /Month get
+  2 string cvs dup length dup 2 ne {1 add exch (00) dup 3 -1 roll 1 exch putinterval exch}if
+  araCDstring length dup /afegit exch def add string dup 0 araCDstring putinterval
+  dup afegit 4 -1 roll putinterval /araCDstring exch def
+  dup /Day get
+  2 string cvs dup length dup 2 ne {1 add exch (00) dup 3 -1 roll 1 exch putinterval exch}if
+  araCDstring length dup /afegit exch def add string dup 0 araCDstring putinterval
+  dup afegit 4 -1 roll putinterval /araCDstring exch def
+  dup /Hour get
+  2 string cvs dup length dup 2 ne {1 add exch (00) dup 3 -1 roll 1 exch putinterval exch}if
+  araCDstring length dup /afegit exch def add string dup 0 araCDstring putinterval
+  dup afegit 4 -1 roll putinterval /araCDstring exch def
+  dup /Minute get
+  2 string cvs dup length dup 2 ne {1 add exch (00) dup 3 -1 roll 1 exch putinterval exch}if
+  araCDstring length dup /afegit exch def add string dup 0 araCDstring putinterval
+  dup afegit 4 -1 roll putinterval /araCDstring exch def
+  /Second get
+  2 string cvs dup length dup 2 ne {1 add exch (00) dup 3 -1 roll 1 exch putinterval exch}if
+  araCDstring length dup /afegit exch def add string dup 0 araCDstring putinterval
+  dup afegit 4 -1 roll putinterval /araCDstring exch def
+ }
+ {  %% si Running es a false deixem un missatge d'avis, pero no fem res ...
+  pop
+  (\n ... >>> Hi ha %Calendar% pero Running es a false :\( \n) print flush
+  /araCDstring (D:20180326000000+00'00') def
+ }ifelse
+ /CreationDate araCDstring
+ /ModDate araCDstring
+}
+{
+ /araCDstring (D:20180326000000+00'00') def
+ /CreationDate araCDstring  %% manual
+ /ModDate araCDstring  %% manual
+}ifelse
+/Creator %% (¸.·´¯`·.¸.·´¨«~)  %% en WinAnsi no es veu bé als nous Viewers
+%% en Unicode per tal que funcioni bé amb tots els sistemes
+%% <feff00b8002e00b700b400af006000b7002e00b8002e00b700b400a800ab007e>
+(https://github.com/marcantonifemfum/faSantJaume)
+/Producer (Algorismes de l'inútil per fer volar coloms ~ femfum.com)
+/Title (La llista de reparació jurídica de víctimes del franquisme en dades obertes. Darrera actualització 01/02/2018)
+/Subject (http://anc.gencat.cat/ca/detall/noticia/La-llista-de-reparacio-juridica-de-victimes-del-franquisme-en-dades-obertes)
+/Keywords (http://anc.gencat.cat/.content/anc/noticies/Documents/20171101_actualitzat_llistat_Llei_11_2017.csv, Parlament de Catalunya, Arxiu Nacional de Catalunya, Franquisme, Guerra Civil Espanyola, Desaparicions Forçades o Involuntàries, tortura, Drets Humans, Francoism, Spanish Civil War, Enforced or Involuntary Disappearances, torture, Human Rights, Franquismo, Guerra Civil Española, Desapariciones Forzadas o Involuntarias, Derechos Humanos)
+/DOCINFO pdfmark
+
+(...brossa?)pstack
+

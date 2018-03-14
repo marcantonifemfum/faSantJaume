@@ -1,0 +1,285 @@
+%!
+%#  `GNU GPL FemFum aplanatCaixaBaixa.ps v.01´ array de conversió a caixa baixa (tot) i aplanat d'accents (només vocals +y),
+%#  via índex, per /WinAnsiEncoding facilitant l'ordre alfabètic de les caplletres a componStJaume.ps
+%#
+%#  Per a intèrprets `GNU GPL Ghostscript´ però també, amb ben pocs retocs, pot córrer
+%#  amb l'Adobe Acrobat Distiller (fins hi tot amb MacOSX PSNormalizer Framework/Apple pstopdf).
+%# 
+%#  `Copyleft 2018 :: l'Ametlla de Merola :: Marc Antoni Malagarriga i Picas´
+%#  `<http://www.femfum.com> | <marcantoni@femfum.com>´
+%#  `https://github.com/marcantonifemfum/faSantJaume´
+%# 
+%#  Aquest programa és programari lliure: podeu redistribuir-lo i/o modificar-lo
+%#  sota els termes de la Llicència Pública General de GNU publicada per la Free
+%#  Software Foundation, ja sigui la versió 3 de la Llicència, o (a la seva elecció)
+%#  qualsevol versió posterior.
+%# 
+%#  Aquest programa es distribueix amb l'esperança que sigui útil, però SENSE CAP GARANTIA;
+%#  ni tan sols la garantia implícita MERCANTIL o d'APTITUD PER A UN OBJECTIU PARTICULAR.
+%#  Consulteu els detalls de la Llicència Pública General de GNU per a més informació.
+%# 
+%#  Haurieu de rebre una còpia de la Llicència Pública General de GNU junt amb aquest
+%#  programa. En cas contrari, consulteu <http://www.gnu.org/licenses/>
+
+%% crida a GS
+%% systemdict /EncodingDirectory get /WinAnsiEncoding get
+
+[  %% correspondència #índex original de l'array segons l'encoding vs #índex numèric a caixa baixa
+ 0  %% 0 /.notdef
+ 1  %% 1 /.notdef
+ 2  %% 2 /.notdef
+ 3  %% 3 /.notdef
+ 4  %% 4 /.notdef
+ 5  %% 5 /.notdef
+ 6  %% 6 /.notdef
+ 7  %% 7 /.notdef
+ 8  %% 8 /.notdef
+ 9  %% 9 /.notdef
+ 10  %% 10 /.notdef
+ 11  %% 11 /.notdef
+ 12  %% 12 /.notdef
+ 13  %% 13 /.notdef
+ 14  %% 14 /.notdef
+ 15  %% 15 /.notdef
+ 16  %% 16 /.notdef
+ 17  %% 17 /.notdef
+ 18  %% 18 /.notdef
+ 19  %% 19 /.notdef
+ 20  %% 20 /.notdef
+ 21  %% 21 /.notdef
+ 22  %% 22 /.notdef
+ 23  %% 23 /.notdef
+ 24  %% 24 /.notdef
+ 25  %% 25 /.notdef
+ 26  %% 26 /.notdef
+ 27  %% 27 /.notdef
+ 28  %% 28 /.notdef
+ 29  %% 29 /.notdef
+ 30  %% 30 /.notdef
+ 31  %% 31 /.notdef
+ 32  %% 32 /space
+ 33  %% 33 /exclam
+ 34  %% 34 /quotedbl
+ 35  %% 35 /numbersign
+ 36  %% 36 /dollar
+ 37  %% 37 /percent
+ 38  %% 38 /ampersand
+ 39  %% 39 /quotesingle
+ 40  %% 40 /parenleft
+ 41  %% 41 /parenright
+ 42  %% 42 /asterisk
+ 43  %% 43 /plus
+ 44  %% 44 /comma
+ 45  %% 45 /hyphen
+ 46  %% 46 /period
+ 47  %% 47 /slash
+ 48  %% 48 /zero
+ 49  %% 49 /one
+ 50  %% 50 /two
+ 51  %% 51 /three
+ 52  %% 52 /four
+ 53  %% 53 /five
+ 54  %% 54 /six
+ 55  %% 55 /seven
+ 56  %% 56 /eight
+ 57  %% 57 /nine
+ 58  %% 58 /colon
+ 59  %% 59 /semicolon
+ 60  %% 60 /less
+ 61  %% 61 /equal
+ 62  %% 62 /greater
+ 63  %% 63 /question
+ 64  %% 64 /at
+ 97  %% 65 /A vs /a
+ 98  %% 66 /B vs /b
+ 99  %% 67 /C vs /c
+ 100  %% 68 /D vs /d
+ 101  %% 69 /E vs /e
+ 102  %% 70 /F vs /f
+ 103  %% 71 /G vs /g
+ 104  %% 72 /H vs /h
+ 105  %% 73 /I vs /i
+ 106  %% 74 /J vs /j
+ 107  %% 75 /K vs /k
+ 108  %% 76 /L vs /l
+ 109  %% 77 /M vs /m
+ 110  %% 78 /N vs /n
+ 111  %% 79 /O vs /o
+ 112  %% 80 /P vs /p
+ 113  %% 81 /Q vs /q
+ 114  %% 82 /R vs /r
+ 115  %% 83 /S vs /s
+ 116  %% 84 /T vs /t
+ 117  %% 85 /U vs /u
+ 118  %% 86 /V vs /v
+ 119  %% 87 /W vs /w
+ 120  %% 88 /X vs /x
+ 121  %% 89 /Y vs /y
+ 122  %% 90 /Z vs /z
+ 91  %% 91 /bracketleft
+ 92  %% 92 /backslash
+ 93  %% 93 /bracketright
+ 94  %% 94 /asciicircum
+ 95  %% 95 /underscore
+ 96  %% 96 /grave
+ 97  %% 97 /a
+ 98  %% 98 /b
+ 99  %% 99 /c
+ 100  %% 100 /d
+ 101  %% 101 /e
+ 102  %% 102 /f
+ 103  %% 103 /g
+ 104  %% 104 /h
+ 105  %% 105 /i
+ 106  %% 106 /j
+ 107  %% 107 /k
+ 108  %% 108 /l
+ 109  %% 109 /m
+ 110  %% 110 /n
+ 111  %% 111 /o
+ 112  %% 112 /p
+ 113  %% 113 /q
+ 114  %% 114 /r
+ 115  %% 115 /s
+ 116  %% 116 /t
+ 117  %% 117 /u
+ 118  %% 118 /v
+ 119  %% 119 /w
+ 120  %% 120 /x
+ 121  %% 121 /y
+ 122  %% 122 /z
+ 123  %% 123 /braceleft
+ 124  %% 124 /bar
+ 125  %% 125 /braceright
+ 126  %% 126 /asciitilde
+ 127  %% 127 /bullet
+ 128  %% 128 /Euro
+ 129  %% 129 /bullet
+ 130  %% 130 /quotesinglbase
+ 131  %% 131 /florin
+ 132  %% 132 /quotedblbase
+ 133  %% 133 /ellipsis
+ 134  %% 134 /dagger
+ 135  %% 135 /daggerdbl
+ 136  %% 136 /circumflex
+ 137  %% 137 /perthousand
+ 154  %% 138 /Scaron vs /scaron
+ 139  %% 139 /guilsinglleft
+ 156  %% 140 /OE vs /oe
+ 141  %% 141 /bullet
+ 158  %% 142 /Zcaron vs /zcaron
+ 143  %% 143 /bullet
+ 144  %% 144 /bullet
+ 145  %% 145 /quoteleft
+ 146  %% 146 /quoteright
+ 147  %% 147 /quotedblleft
+ 148  %% 148 /quotedblright
+ 149  %% 149 /bullet
+ 150  %% 150 /endash
+ 151  %% 151 /emdash
+ 152  %% 152 /tilde
+ 153  %% 153 /trademark
+ 154  %% 154 /scaron
+ 155  %% 155 /guilsinglright
+ 156  %% 156 /oe
+ 157  %% 157 /bullet
+ 158  %% 158 /zcaron
+ 255  %% 159 /Ydieresis
+ 160  %% 160 /space
+ 161  %% 161 /exclamdown
+ 162  %% 162 /cent
+ 163  %% 163 /sterling
+ 164  %% 164 /currency
+ 165  %% 165 /yen
+ 166  %% 166 /brokenbar
+ 167  %% 167 /section
+ 168  %% 168 /dieresis
+ 169  %% 169 /copyright
+ 170  %% 170 /ordfeminine
+ 171  %% 171 /guillemotleft
+ 172  %% 172 /logicalnot
+ 173  %% 173 /hyphen
+ 174  %% 174 /registered
+ 175  %% 175 /macron
+ 176  %% 176 /degree
+ 177  %% 177 /plusminus
+ 178  %% 178 /twosuperior
+ 179  %% 179 /threesuperior
+ 97  %% 180 /acute vs /a
+ 181  %% 181 /mu
+ 182  %% 182 /paragraph
+ 183  %% 183 /periodcentered
+ 184  %% 184 /cedilla
+ 185  %% 185 /onesuperior
+ 186  %% 186 /ordmasculine
+ 187  %% 187 /guillemotright
+ 188  %% 188 /onequarter
+ 189  %% 189 /onehalf
+ 190  %% 190 /threequarters
+ 191  %% 191 /questiondown
+ 97  %% 192 /Agrave vs /a
+ 97  %% 193 /Aacute vs /a
+ 97  %% 194 /Acircumflex vs /a
+ 97  %% 195 /Atilde vs /a
+ 97  %% 196 /Adieresis vs /a
+ 97  %% 197 /Aring vs /a
+ 230  %% 198 /AE vs /ae
+ 231  %% 199 /Ccedilla vs /ccedilla
+ 101  %% 200 /Egrave vs /e
+ 101  %% 201 /Eacute vs /e
+ 101  %% 202 /Ecircumflex vs /e
+ 101  %% 203 /Edieresis vs /e
+ 105  %% 204 /Igrave vs /i
+ 105  %% 205 /Iacute vs /i
+ 105  %% 206 /Icircumflex vs /i
+ 105  %% 207 /Idieresis vs /i
+ 240  %% 208 /Eth vs /eth
+ 241  %% 209 /Ntilde vs /ntilde
+ 111  %% 210 /Ograve vs /o
+ 111  %% 211 /Oacute vs /o
+ 111  %% 212 /Ocircumflex vs /o
+ 111  %% 213 /Otilde vs /o
+ 111  %% 214 /Odieresis vs /o
+ 215  %% 215 /multiply
+ 111  %% 216 /Oslash vs /o
+ 117  %% 217 /Ugrave vs /u
+ 117  %% 218 /Uacute vs /u
+ 117  %% 219 /Ucircumflex vs /u
+ 117  %% 220 /Udieresis vs /u
+ 121  %% 221 /Yacute vs /y
+ 254  %% 222 /Thorn vs /thorn
+ 223  %% 223 /germandbls
+ 97  %% 224 /agrave vs /a
+ 97  %% 225 /aacute vs /a
+ 97  %% 226 /acircumflex vs /a
+ 97  %% 227 /atilde vs /a
+ 97  %% 228 /adieresis vs /a
+ 97  %% 229 /aring vs /a
+ 230  %% 230 /ae
+ 231  %% 231 /ccedilla
+ 101  %% 232 /egrave vs /e
+ 101  %% 233 /eacute vs /e
+ 101  %% 234 /ecircumflex vs /e
+ 101  %% 235 /edieresis vs /e
+ 105  %% 236 /igrave vs /i
+ 105  %% 237 /iacute vs /i
+ 105  %% 238 /icircumflex vs /i
+ 105  %% 239 /idieresis vs /i
+ 240  %% 240 /eth
+ 241  %% 241 /ntilde
+ 111  %% 242 /ograve vs /o
+ 111  %% 243 /oacute vs /o
+ 111  %% 244 /ocircumflex vs /o
+ 111  %% 245 /otilde vs /o
+ 111  %% 246 /odieresis vs /o
+ 247  %% 247 /divide
+ 111  %% 248 /oslash vs /o
+ 117  %% 249 /ugrave vs /u
+ 117  %% 250 /uacute vs /u
+ 117  %% 251 /ucircumflex vs /u
+ 117  %% 252 /udieresis vs /u
+ 121  %% 253 /yacute vs /y
+ 254  %% 254 /thorn
+ 121  %% 255 /ydieresis vs /y
+]
+

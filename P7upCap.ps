@@ -1,0 +1,265 @@
+%!
+%#  `GNU GPL FemFum P7upCap.ps v.01´ inicialitza el format de pàgina (MediaBox), amb les seves àrees normatives de treball
+%#  (TrimBox, BleedBox i també pot activar ArtBox i CropBox). Genera les creus de tall (PrinterMarks) de forma especial
+%#  com anotacions, i activa o no la sobreimpressió en CMYK.
+%#
+%#  Per a intèrprets `GNU GPL Ghostscript´ però també, amb ben pocs retocs, pot córrer
+%#  amb l'Adobe Acrobat Distiller (fins hi tot amb MacOSX PSNormalizer Framework/Apple pstopdf).
+%# 
+%#  `Copyleft 2018 :: l'Ametlla de Merola :: Marc Antoni Malagarriga i Picas´
+%#  `<http://www.femfum.com> | <marcantoni@femfum.com>´
+%#  `https://github.com/marcantonifemfum/faSantJaume´
+%# 
+%#  Aquest programa és programari lliure: podeu redistribuir-lo i/o modificar-lo
+%#  sota els termes de la Llicència Pública General de GNU publicada per la Free
+%#  Software Foundation, ja sigui la versió 3 de la Llicència, o (a la seva elecció)
+%#  qualsevol versió posterior.
+%# 
+%#  Aquest programa es distribueix amb l'esperança que sigui útil, però SENSE CAP GARANTIA;
+%#  ni tan sols la garantia implícita MERCANTIL o d'APTITUD PER A UN OBJECTIU PARTICULAR.
+%#  Consulteu els detalls de la Llicència Pública General de GNU per a més informació.
+%# 
+%#  Haurieu de rebre una còpia de la Llicència Pública General de GNU junt amb aquest
+%#  programa. En cas contrari, consulteu <http://www.gnu.org/licenses/>
+
+false /femCropBox exch def  %# activem el CropBox o fem les creus de tall?
+false /paginatDretaEsquerra exch def  %#activem l'enquadernat dreta/esquerra?
+
+%# la pàgina d'impressió (MediaBox) va en funció del format de la plana de diagramació (TrimBox) i els valors de les 4 pinces
+%% que s'afegeixen al seu voltant, a banda podrem activar-hi creus de tall (Printer Marks Annotations) i CropBox
+
+%% per tant, primer definim el TrimBox (ample i alt), o sigui el format de la plana de diagramació
+%% format màxim, de pancarta de reparació jurídica, haurem de deduïr a quin % caldrà ampliar
+AMPLE 28.35 mul /xTbox exch def
+ALT 28.35 mul /yTbox exch def
+
+%% fem les creus de tall? ...ara en funció del CropBox!
+femCropBox
+{
+ false
+}
+{
+ true  %% només ens cal incidir aquí
+}ifelse
+/CreusDtall exch def
+
+%# si fem les creus de tall, s'han d'imprimir?
+true /imprimimCreusDtall exch def
+
+30 /pinca exch def  %# l'espai de pinça ha de ser idèntic pels 4 xamfrans entre el MediaBox i el TrimBox
+
+%% valor de sangs per als elements que han de superar el TrimBox (tacs, imatges, etc)
+pinca 2 div /sangs exch def
+
+%% llavors, ja podem definir el MediaBox (ample i alt), o sigui el format de pàgina d'impressió
+xTbox pinca pinca add add /xMbox exch def
+yTbox pinca pinca add add /yMbox exch def
+
+%% generem un procediment de setup per cada cop que encetem una nova pàgina (7upCap), o en sortim? (7upPeus?) on definirem:
+%% MediaBox, TrimBox, ArtBox, CropBox, les creus de tall, el BleedBox, l'espai de color, sobreimpressió
+%% en aquest procediment posarem en solfa l'estratègia dels // «immediate evaluate names» de manera que ja carregarem
+%% directament el valor de la variable dins el procediment
+%/P7upCap
+%{
+ %% format de pàgina d'impressió
+ <<
+   /PageSize[ //xMbox //yMbox ]  %% // immediate evaluate names!
+   /HWResolution [4000 4000]  %% activem al màxim la resolució (veure ghostpdf.ppd)
+ >>setpagedevice
+
+ %% definim el TrimBox afegint-hi el translate de les pinces
+ [ /TrimBox
+  [ //pinca //pinca 1 index //xTbox add 1 index //yTbox add ]
+ /PAGE pdfmark  %% rectangle amb una línia verda per defecte als Reader/Acrobat
+
+%%CAL saber d'on surt 4ArtBox doncs no el trobem al fitxers de configuració
+ %% definim l'ArtBox afegint-hi el translate de les pinces
+% [ /ArtBox
+%  [
+%   //4ArtBox 0 get aload pop exch //pinca add exch //pinca add
+%   //4ArtBox 2 get aload pop exch //pinca add exch //pinca add
+%  ]
+% /PAGE pdfmark  %% rectangle amb una línia vermella per defecte als Reader/Acrobat
+
+ %% retallem l'original per amagar les pinces, les sangs i les creus de tall?
+ femCropBox
+ {
+  %% definim el CropBox ídem al TrimBox
+  [ /CropBox
+   [ //pinca //pinca dup //xTbox add 1 index //yTbox add ]
+  /PAGE pdfmark  %% màscara de retall removible
+ }
+ {
+  %% definim el BleedBox
+  [ /BleedBox
+   [ //pinca //sangs sub //pinca //sangs sub dup //xTbox add //sangs 2 mul add 1 index //yTbox add //sangs 2 mul add ]
+  /PAGE pdfmark  %% rectangle amb una línia blava per defecte als Reader/Acrobat
+ }ifelse
+
+ %% definim l'espai de color
+ /DeviceCMYK setcolorspace
+ %/DeviceGray setcolorspace
+
+ %% fem l'overprint?
+ true setoverprint
+
+ %% fem i definim les creus de tall?
+ //CreusDtall
+ {  %% if
+  .5 /gruixCreu exch def  %% gruix de la línia de creu de tall
+  imprimimCreusDtall
+  {
+   68 /bondat exch def  %% bit de comportament: 68 = s'imprimeix/ReadOnly
+  }
+  {
+   64 /bondat exch def  %% bit de comportament: 64 = NO s'imprimeix/ReadOnly
+  }ifelse
+  /FormXObjectStream
+  {
+   %% aquí l'stream del FormXObject que pinta la creu de tall
+   gsave
+   %% H coixí blanc x xafar sangs fosques
+   0 0 0 0 setcmykcolor 1 setflat gruixCreu 3 mul setlinewidth 10 setmiterlimit 0 setlinejoin 0 setlinecap []0 setdash
+   0 //pinca moveto //pinca .75 mul //pinca lineto stroke
+   %% H creu de tall negre
+   1 1 1 1 setcmykcolor 1 setflat gruixCreu setlinewidth 10 setmiterlimit 0 setlinejoin 0 setlinecap []0 setdash
+   0 //pinca moveto //pinca .75 mul //pinca lineto stroke  %% la llargada de la creu de tall és un 75% de la pinça
+   %% V coixí blanc x xafar sangs fosques
+   0 0 0 0 setcmykcolor 1 setflat gruixCreu 3 mul setlinewidth 10 setmiterlimit 0 setlinejoin 0 setlinecap []0 setdash
+   //pinca 0 moveto //pinca //pinca .75 mul lineto stroke
+   %% V creu de tall negre
+   1 1 1 1 setcmykcolor 1 setflat gruixCreu setlinewidth 10 setmiterlimit 0 setlinejoin 0 setlinecap []0 setdash
+   //pinca 0 moveto //pinca //pinca .75 mul lineto stroke  %% la llargada de la creu de tall és un 75% de la pinça
+   grestore
+  }def
+  %% aquí les creus...
+
+  %% xamfrà ll
+  %% podem fer una PrinterMark creant un objecte FormXObject via BP/EP (vegeu FormXObjectViaPdfmark.ps)
+  [
+   /BBox [0 0 //pinca gruixCreu 3 mul 2 div add dup ]
+   /_objdef {laPrinterMarkll}
+   /BP pdfmark  %% obrim el Form definint el BBox i el nom
+  FormXObjectStream  %% aquí l'stream del FormXObject de la PrinterMark
+  [ /EP pdfmark  %% tanquem el Form
+  %% com que el Form duu un diccionari, un cop creat, podem afegi-li més entrades importants
+  [ {laPrinterMarkll} <</Matrix [1 0 0 1 0 0]>> /PUT pdfmark  %% aquí podem controlar la rotació/mirall i altres
+  %% l'objecte anotació que en fa referència (vegeu PrinterMarkAnnotation_apel) per les Appeareances /AP
+  [
+   /Subtype /PrinterMark
+   /Rect [0 0 //pinca gruixCreu 3 mul 2 div add dup]  %% lligat al BBox, això és el que realment el situa a la pàgina!
+   %% flag de comportament: bits 3 i 7 = s'imprimeix i només lectura, veure a la PDF Ref taula 8.16 pàg.608 
+   /F bondat  %% flag de comportament: bit 7 = només lectura i NO s'imprimeix, veure a la PDF Ref taula 8.16 pàg.608 
+   /AP
+   <<
+     /N {laPrinterMarkll}  %% nom del FormXObject
+     /Matrix [1 0 0 1 0 0]
+   >>
+  /ANN pdfmark
+
+  %% xamfrà ur
+  %% podem fer una PrinterMark creant un objecte FormXObject via BP/EP (vegeu FormXObjectViaPdfmark.ps)
+  [
+   /BBox [ 0 0 //pinca gruixCreu 3 mul 2 div add dup ]
+   /_objdef {laPrinterMarkur}
+  /BP pdfmark  %% obrim el Form definint el BBox i el nom
+  FormXObjectStream  %% aquí l'stream del FormXObject de la PrinterMark
+  [ /EP pdfmark  %% tanquem el Form
+  %% com que el Form duu un diccionari, un cop creat, podem afegi-li més entrades importants
+  [ {laPrinterMarkur} <</Matrix [-1 0 0 -1 0 0]>> /PUT pdfmark  %% aquí podem controlar la rotació/mirall i altres
+  %% l'objecte anotació que en fa referència (vegeu PrinterMarkAnnotation_apel) per les Appeareances /AP
+  [
+   /Subtype /PrinterMark
+   /Rect
+   [
+    //xMbox //yMbox
+    //pinca gruixCreu 3 mul 2 div add dup
+    //xMbox exch sub exch //yMbox exch sub
+   ]  %% lligat al BBox, això és el que realment el situa a la pàgina!
+   %% flag de comportament: bits 3 i 7 = s'imprimeix i només lectura, veure a la PDF Ref taula 8.16 pàg.608 
+   /F bondat  %% flag de comportament: bit 7 = només lectura i NO s'imprimeix, veure a la PDF Ref taula 8.16 pàg.608 
+   /AP
+   <<
+     /N {laPrinterMarkur}  %% nom del FormXObject
+     /Matrix [1 0 0 1 0 0]
+   >>
+  /ANN pdfmark
+
+  %% xamfrà lr
+  %% podem fer una PrinterMark creant un objecte FormXObject via BP/EP (vegeu FormXObjectViaPdfmark.ps)
+  [
+   /BBox [ 0 0 //pinca gruixCreu 3 mul 2 div add dup ]
+   /_objdef {laPrinterMarklr}
+  /BP pdfmark  %% obrim el Form definint el BBox i el nom
+  FormXObjectStream  %% aquí l'stream del FormXObject de la PrinterMark
+  [ /EP pdfmark  %% tanquem el Form
+  %% com que el Form duu un diccionari, un cop creat, podem afegi-li més entrades importants
+  [ {laPrinterMarklr} <</Matrix [-1 0 0 1 0 0]>> /PUT pdfmark  %% aquí podem controlar la rotació/mirall i altres
+  %% l'objecte anotació que en fa referència (vegeu PrinterMarkAnnotation_apel) per les Appeareances /AP
+  [
+   /Subtype /PrinterMark
+   /Rect
+   [
+    //xMbox 0
+    //pinca gruixCreu 3 mul 2 div add dup
+    //xMbox exch sub exch 0 exch add
+   ]  %% lligat al BBox, això és el que realment el situa a la pàgina!
+   %% flag de comportament: bits 3 i 7 = s'imprimeix i només lectura, veure a la PDF Ref taula 8.16 pàg.608 
+   /F bondat  %% flag de comportament: bit 7 = només lectura i NO s'imprimeix, veure a la PDF Ref taula 8.16 pàg.608 
+   /AP
+   <<
+     /N {laPrinterMarklr}  %% nom del FormXObject
+     /Matrix [1 0 0 1 0 0]
+   >>
+  /ANN pdfmark
+
+  %% xamfrà ul
+  %% podem fer una PrinterMark creant un objecte FormXObject via BP/EP (vegeu FormXObjectViaPdfmark.ps)
+  [
+   /BBox [ 0 0 //pinca gruixCreu 3 mul 2 div add dup ]
+   /_objdef {laPrinterMarkul}
+  /BP pdfmark  %% obrim el Form definint el BBox i el nom
+  FormXObjectStream  %% aquí l'stream del FormXObject de la PrinterMark
+  [ /EP pdfmark  %% tanquem el Form
+  %% com que el Form duu un diccionari, un cop creat, podem afegi-li més entrades importants
+  [ {laPrinterMarkul} <</Matrix [1 0 0 -1 0 0]>> /PUT pdfmark  %% aquí podem controlar la rotació/mirall i altres
+  %% l'objecte anotació que en fa referència (vegeu PrinterMarkAnnotation_apel) per les Appeareances /AP
+  [
+   /Subtype /PrinterMark
+   /Rect
+   [
+    0 //yMbox
+    //pinca gruixCreu 3 mul 2 div add dup
+    //yMbox exch sub
+   ]  %% lligat al BBox, això és el que realment el situa a la pàgina!
+   %% flag de comportament: bits 3 i 7 = s'imprimeix i només lectura, veure a la PDF Ref taula 8.16 pàg.608 
+   /F bondat  %% flag de comportament: bit 7 = només lectura i NO s'imprimeix, veure a la PDF Ref taula 8.16 pàg.608 
+   /AP
+   <<
+     /N {laPrinterMarkul}  %% nom del FormXObject
+     /Matrix [1 0 0 1 0 0]
+   >>
+  /ANN pdfmark
+ }if  %% fem i definim les creus de tall?
+
+% paginatDretaEsquerra
+% {  %% activant l'enquadernat dreta/esquerra enretirarem l'X cap a la dreta, a les pàgines de l'esquerra, el valor /XnomFamilia
+%    %% menys dues pinces, tots els elements menys: les creus de tall, el peu corporatiu amb la numeració i els tacs de nivell 1
+%  enquaDerna not
+%  {  %% enquadernat a l'esquerra
+%   taulesLlargues
+%   {
+%    femNivell1
+%    {  %% només quan posem el tac de nivell 1 podem enretirar les taules cap a la dreta
+%     %% doncs si la va a dues columnes, no hi ha tac de nivell 1 i llavors no té sentit fer-ho
+%     XnomFamilia pinca 2 mul sub 0 translate
+%    }if
+%   }
+%   {
+%    XnomFamilia pinca 2 mul sub 0 translate
+%   }ifelse
+%  }if
+% }if
+
+%}def  %% P7upCap
+
