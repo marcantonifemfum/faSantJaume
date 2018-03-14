@@ -1,4 +1,4 @@
-# faSantJaume [CA]
+# faSantJaume [ca]
 Algorismes componedors, escrits en llenguatge PostScript, del llistat de reparació jurídica de les víctimes del franquisme / Parlament de Catalunya · LLEI 11/2017, del 4 de juliol… http://dogc.gencat.cat/ca/pdogc_canals_interns/pdogc_resultats_fitxa/?action=fitxa&documentId=791945
 
 Una iniciativa de la **Mesa de Catalunya d'Entitats Memorialistes**, per tal de confeccionar una gran pancarta (10x1,5m aprox.) a exposar a les concentracions mensuals d'aquesta coordinadora «Veritat, Justícia i Reparació», a la plaça de Sant Jaume de Barcelona… https://mesadecatalunyanoticies.blogspot.com
@@ -54,6 +54,9 @@ Necessita executar-se amb dos algorismes més, dins el mateix directori, que us 
 > **P7upCap.ps**
 > Inicialitza el format de pàgina (*MediaBox*), amb les seves àrees normatives de treball (*TrimBox, BleedBox* i també pot activar *ArtBox* i *CropBox*). Genera les creus de tall (*PrinterMarks*) de forma especial com anotacions, i activa o no la sobreimpressió en CMYK.
 
-Teniu un exemple del resultat final (work in progress) a **reparacioJuridicaVictimesFranquisme_pancarta140318.pdf**
+Teniu un exemple del resultat final (work in progress) a…
+**reparacioJuridicaVictimesFranquisme_pancarta140318.pdf**
+…NOTA IMPORTANT PER LA CERCA DE NOMS DINS EL PDF: amb *viewers* tipus *AdobeReader* (almenys en darreres versions a MacOSX), degut segurament a l'alta densitat de noms dins d'una sola pàgina (més de seixanta-sis mil resgistres), el Find/Search no funciona correctament (localitza noms incorrectes).
+
 
 Documentació d'errors, suggeriments i tota mena de col·laboracions, seran benvingudes!
