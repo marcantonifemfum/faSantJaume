@@ -1,5 +1,5 @@
 # faSantJaume [ca]
-Algorismes componedors, escrits en llenguatge PostScript, del llistat de reparació jurídica de les víctimes del franquisme / Parlament de Catalunya · LLEI 11/2017, del 4 de juliol… http://dogc.gencat.cat/ca/pdogc_canals_interns/pdogc_resultats_fitxa/?action=fitxa&documentId=791945
+Algorismes componedors, escrits en llenguatge *PostScript*, del **llistat de reparació jurídica de les víctimes del franquisme / Parlament de Catalunya · Llei 11/2017, del 4 de juliol**… http://dogc.gencat.cat/ca/pdogc_canals_interns/pdogc_resultats_fitxa/?action=fitxa&documentId=791945
 
 Una iniciativa de la **Mesa de Catalunya d'Entitats Memorialistes**, per tal de confeccionar una gran pancarta (10x1,5m aprox.) a exposar a les concentracions mensuals d'aquesta coordinadora «Veritat, Justícia i Reparació», a la plaça de Sant Jaume de Barcelona… https://mesadecatalunyanoticies.blogspot.com
 
