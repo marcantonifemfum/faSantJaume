@@ -54,3 +54,6 @@ Necessita executar-se amb dos algorismes més, dins el mateix directori, que us 
 > **P7upCap.ps**
 > Inicialitza el format de pàgina (*MediaBox*), amb les seves àrees normatives de treball (*TrimBox, BleedBox* i també pot activar *ArtBox* i *CropBox*). Genera les creus de tall (*PrinterMarks*) de forma especial com anotacions, i activa o no la sobreimpressió en CMYK.
 
+Teniu un exemple del resultat final (work in progress) a **reparacioJuridicaVictimesFranquisme_pancarta140318.pdf**
+
+Documentació d'errors, suggeriments i tota mena de col·laboracions, seran benvingudes!
