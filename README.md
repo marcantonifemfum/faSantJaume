@@ -19,7 +19,7 @@ Es respecta l'ordre alfabètic original de les víctimes i se'n purguen les repe
 
 El *prompt* d'execució, documenta la feina feta i si es donen possibles errors.
 
-Necessita executar-se amb un algorismes més, de suport, dins el mateix directori:
+Necessita executar-se amb un algorisme de suport, dins el mateix directori:
 
 > **espiapaq_fura4_.ps**
 > Reescriu una *array* per a tota mena d'objectes inclosos i recursivitats.
@@ -55,9 +55,9 @@ Necessita executar-se amb dos algorismes més, dins el mateix directori, que us 
 > Inicialitza el format de pàgina (*MediaBox*), amb les seves àrees normatives de treball (*TrimBox, BleedBox* i també pot activar *ArtBox* i *CropBox*). Genera les creus de tall (*PrinterMarks*) de forma especial com anotacions i, activa o no, la sobreimpressió en CMYK.
 
 Teniu un exemple del resultat final (work in progress) a…
-**reparacioJuridicaVictimesFranquisme_pancarta140318.pdf**
+**reparacioJuridicaVictimesFranquisme_pancarta160318.pdf**
 
-NOTA IMPORTANT PER A LA CERCA DE NOMS DINS EL PDF: amb *viewers* tipus *AdobeReader* (almenys en darreres versions a MacOSX), degut segurament a l'alta densitat de text dins d'una sola pàgina (més de seixanta-sis mil resgistres), el Find/Search no funciona correctament (localitza noms erronis).
+NOTA IMPORTANT PER A LA CERCA DE NOMS DINS EL PDF: amb *viewers* tipus *AdobeReader* (almenys en darreres versions a MacOSX), degut segurament a l'alta densitat de text dins d'una sola pàgina (més de seixanta-sis mil registres), el Find/Search no funciona correctament (localitza noms erronis).
 
 
 Documentació d'errors, suggeriments i tota mena de col·laboracions, seran benvingudes!
