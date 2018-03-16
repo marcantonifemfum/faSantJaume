@@ -148,37 +148,6 @@ dup begin  %% entrem dins el diccionari de la MM per poder cridar els procedimen
 ] end
 makeblendedfont
 definefont  %% fixem la font en memòria
-dup
-8 scalefont setfont
-25 275 moveto (ALDEA Y RUIZ DE CASTAÑEDA, María de la Purificación) show
-dup
-9 scalefont setfont
-25 260 moveto (ALDEA Y RUIZ DE CASTAÑEDA, María de la Purificación) show
-dup
-10 scalefont setfont
-25 245 moveto (ALDEA Y RUIZ DE CASTAÑEDA, María de la Purificación) show
-dup
-11 scalefont setfont
-25 230 moveto (ALDEA Y RUIZ DE CASTAÑEDA, María de la Purificación) show
-dup
-12 scalefont setfont
-25 215 moveto (ALDEA Y RUIZ DE CASTAÑEDA, María de la Purificación) show
-dup
-13 scalefont setfont
-25 200 moveto (ALDEA Y RUIZ DE CASTAÑEDA, María de la Purificación) show
-dup
-14 scalefont setfont
-25 185 moveto (ALDEA Y RUIZ DE CASTAÑEDA, María de la Purificación) show
-dup
-15 scalefont setfont
-25 170 moveto (ALDEA Y RUIZ DE CASTAÑEDA, María de la Purificación) show
-dup
-16 scalefont setfont
-25 155 moveto (ALDEA Y RUIZ DE CASTAÑEDA, María de la Purificación) show
-dup
-17 scalefont setfont
-25 140 moveto (ALDEA Y RUIZ DE CASTAÑEDA, María de la Purificación) show
-
 18 scalefont setfont
 25 125 moveto (ALDEA Y RUIZ DE CASTAÑEDA, María de la Purificación) show
 
@@ -201,19 +170,6 @@ dup begin  %% entrem dins el diccionari de la MM per poder cridar els procedimen
 ] end
 makeblendedfont
 definefont  %% fixem la font en memòria
-dup
-8 scalefont setfont
-25 350 moveto (ALDEA Y RUIZ DE CASTAÑEDA, María de la Purificación) show
-dup
-9 scalefont setfont
-25 335 moveto (ALDEA Y RUIZ DE CASTAÑEDA, María de la Purificación) show
-dup
-10 scalefont setfont
-25 320 moveto (ALDEA Y RUIZ DE CASTAÑEDA, María de la Purificación) show
-dup
-11 scalefont setfont
-25 305 moveto (ALDEA Y RUIZ DE CASTAÑEDA, María de la Purificación) show
-
 12 scalefont setfont
 25 290 moveto (ALDEA Y RUIZ DE CASTAÑEDA, María de la Purificación) show
 
@@ -236,19 +192,6 @@ dup begin  %% entrem dins el diccionari de la MM per poder cridar els procedimen
 ] end
 makeblendedfont
 definefont  %% fixem la font en memòria
-dup
-8 scalefont setfont
-25 425 moveto (ALDEA Y RUIZ DE CASTAÑEDA, María de la Purificación) show
-dup
-9 scalefont setfont
-25 410 moveto (ALDEA Y RUIZ DE CASTAÑEDA, María de la Purificación) show
-dup
-10 scalefont setfont
-25 395 moveto (ALDEA Y RUIZ DE CASTAÑEDA, María de la Purificación) show
-dup
-11 scalefont setfont
-25 380 moveto (ALDEA Y RUIZ DE CASTAÑEDA, María de la Purificación) show
-
 12 scalefont setfont
 25 365 moveto (ALDEA Y RUIZ DE CASTAÑEDA, María de la Purificación) show
 }if
@@ -684,7 +627,8 @@ moveto (Parlament de Catalunya · LLEI 11/2017, del 4 de juliol, de reparació jur
 0 1 1 0 setcolor
 currentpoint pop sangs 3 mul add  %% x
 sangs 2 mul  %% y
-CosDeTextVictimes CAPinfo 28.35 mul 2 sub scalefont setfont
+%CosDeTextVictimes
+VictimesExecutades CAPinfo 28.35 mul 2 sub scalefont setfont
 moveto (executades) show
 .2 .2 0 0 setcolor
 currentpoint pop sangs 3 mul add CAPinfo 28.35 mul 2 div add dup /xVA exch def  %% centre x
@@ -714,7 +658,8 @@ currentpoint exch sangs 3 mul add exch moveto  %% intermezzo
 0 1 1 0 setcolor
 currentpoint pop sangs 3 mul add  %% x
 sangs 2 mul  %% y
-CosDeTextVictimes CAPinfo 28.35 mul 2 sub scalefont setfont
+%CosDeTextVictimes
+VictimesExecutades CAPinfo 28.35 mul 2 sub scalefont setfont
 moveto (executades) show
 .2 .2 0 0 setcolor
 currentpoint pop sangs 3 mul add CAPinfo 28.35 mul 2 div add dup /xVA exch def  %% centre x
@@ -812,61 +757,41 @@ yTbox CAPinfo 28.35 mul 2 div marGes add sub sangs add  %% y
 
 0 0 0 0 setcolor
 MyPBionari CAPinfo 28.35 mul 2 sub scalefont setfont
-moveto (Llistat de judicis franquistes anu) show currentpoint pop /lx1 exch def (ll) show currentpoint /ly exch def lx1 sub
+moveto (Llistat de persones encausades per la dictadura franquista, a Catalunya, en judicis anu) show currentpoint pop /lx1 exch def (ll) show currentpoint /ly exch def lx1 sub
 MyPBionari CAPinfo 28.35 mul 42 sub scalefont setfont
 (·) stringwidth pop sub 2 div lx1 add currentpoint exch /lx2 exch def 15 add moveto (·) show lx2 ly moveto
 MyPBionari CAPinfo 28.35 mul 2 sub scalefont setfont
-(ats pel Parlament de Catalunya) show
+(ats pel Parlament. Font: Arxiu Nacional de Catalunya) show
 
 currentpoint exch sangs 3 mul add exch moveto  %% intermezzo
 (·) show
 currentpoint exch sangs 3 mul add exch moveto  %% intermezzo
 
-(Llistat de judicis franquistes anu) show currentpoint pop /lx1 exch def (ll) show currentpoint /ly exch def lx1 sub
+(Llistat de persones encausades per la dictadura franquista, a Catalunya, en judicis anu) show currentpoint pop /lx1 exch def (ll) show currentpoint /ly exch def lx1 sub
 MyPBionari CAPinfo 28.35 mul 42 sub scalefont setfont
 (·) stringwidth pop sub 2 div lx1 add currentpoint exch /lx2 exch def 15 add moveto (·) show lx2 ly moveto
 MyPBionari CAPinfo 28.35 mul 2 sub scalefont setfont
-(ats pel Parlament de Catalunya) show
+(ats pel Parlament. Font: Arxiu Nacional de Catalunya) show
 
 currentpoint exch sangs 3 mul add exch moveto  %% intermezzo
 (·) show
 currentpoint exch sangs 3 mul add exch moveto  %% intermezzo
 
-(Llistat de judicis franquistes anu) show currentpoint pop /lx1 exch def (ll) show currentpoint /ly exch def lx1 sub
+(Llistat de persones encausades per la dictadura franquista, a Catalunya, en judicis anu) show currentpoint pop /lx1 exch def (ll) show currentpoint /ly exch def lx1 sub
 MyPBionari CAPinfo 28.35 mul 42 sub scalefont setfont
 (·) stringwidth pop sub 2 div lx1 add currentpoint exch /lx2 exch def 15 add moveto (·) show lx2 ly moveto
 MyPBionari CAPinfo 28.35 mul 2 sub scalefont setfont
-(ats pel Parlament de Catalunya) show
+(ats pel Parlament. Font: Arxiu Nacional de Catalunya) show
 
 currentpoint exch sangs 3 mul add exch moveto  %% intermezzo
 (·) show
 currentpoint exch sangs 3 mul add exch moveto  %% intermezzo
 
-(Llistat de judicis franquistes anu) show currentpoint pop /lx1 exch def (ll) show currentpoint /ly exch def lx1 sub
+(Llistat de persones encausades per la dictadura franquista, a Catalunya, en judicis anu) show currentpoint pop /lx1 exch def (ll) show currentpoint /ly exch def lx1 sub
 MyPBionari CAPinfo 28.35 mul 42 sub scalefont setfont
 (·) stringwidth pop sub 2 div lx1 add currentpoint exch /lx2 exch def 15 add moveto (·) show lx2 ly moveto
 MyPBionari CAPinfo 28.35 mul 2 sub scalefont setfont
-(ats pel Parlament de Catalunya) show
-
-currentpoint exch sangs 3 mul add exch moveto  %% intermezzo
-(·) show
-currentpoint exch sangs 3 mul add exch moveto  %% intermezzo
-
-(Llistat de judicis franquistes anu) show currentpoint pop /lx1 exch def (ll) show currentpoint /ly exch def lx1 sub
-MyPBionari CAPinfo 28.35 mul 42 sub scalefont setfont
-(·) stringwidth pop sub 2 div lx1 add currentpoint exch /lx2 exch def 15 add moveto (·) show lx2 ly moveto
-MyPBionari CAPinfo 28.35 mul 2 sub scalefont setfont
-(ats pel Parlament de Catalunya) show
-
-currentpoint exch sangs 3 mul add exch moveto  %% intermezzo
-(·) show
-currentpoint exch sangs 3 mul add exch moveto  %% intermezzo
-
-(Llistat de judicis franquistes anu) show currentpoint pop /lx1 exch def (ll) show currentpoint /ly exch def lx1 sub
-MyPBionari CAPinfo 28.35 mul 42 sub scalefont setfont
-(·) stringwidth pop sub 2 div lx1 add currentpoint exch /lx2 exch def 15 add moveto (·) show lx2 ly moveto
-MyPBionari CAPinfo 28.35 mul 2 sub scalefont setfont
-(ats pel Parlament de Catalunya) show
+(ats pel Parlament. Font: Arxiu Nacional de Catalunya) show
 
 %0 1 1 0 setcolor
 %currentpoint pop sangs 3 mul add  %% x
@@ -1033,12 +958,12 @@ CosDeTextVictimes CAPinfo 28.35 mul 42 sub scalefont setfont
 xTbox marGes sub CAPinfo 28.35 mul marGes add translate 90 rotate
 0 marGes 2 div neg moveto (http://dom.cat/adecidir) show
 0 0 0 1 setcolor
-currentpoint exch marGes add dup /araX exch def exch moveto
-rPJ 32 string cvs show ( persones jurídiques) show
+currentpoint exch marGes 4 mul add dup /araX exch def exch moveto
+rPJ 32 string cvs dup stringwidth pop neg 0 rmoveto show (  persones jurídiques) show
 currentpoint CAPinfo 28.35 mul 42 sub add exch pop araX exch moveto
-rH 32 string cvs show ( homes # executats ) show eH 32 string cvs show
+rH 32 string cvs dup stringwidth pop neg 0 rmoveto show (  homes # executats ) show eH 32 string cvs show
 currentpoint CAPinfo 28.35 mul 42 sub add exch pop araX exch moveto
-rD 32 string cvs show ( dones # executades ) show eD 32 string cvs show
+rD 32 string cvs dup stringwidth pop neg 0 rmoveto show (  dones # executades ) show eD 32 string cvs show
 grestore
 
 showpage
