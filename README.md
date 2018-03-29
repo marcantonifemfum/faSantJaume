@@ -15,7 +15,7 @@ Expliquem el procés de generació, per ordre d'ús, dels fitxers de codi que en
 
 Llegeix les dades del CSV, segons l'estructura de camps descrita per l'emissor, i en genera tres (3) fitxers a disc, en TXT —codificats en WinAnsi—, categoritzats en persones físiques (dones i homes) i en persones jurídiques. Abans però, haurem purgat manualment els errors descrits al fitxer original en CSV.
 
-Es respecta l'ordre alfabètic original de les víctimes i se'n purguen les repeticions (persones amb sumaríssims diversos), fent constar només el nom complet, un gatell d'execució i el seu codi, segons l'ANC, dins un únic paquet d'*arrays*. Vegeu personesJuridiquesRepresaliades_010218.txt, donesRepresaliades_010218.txt i homesRepresaliats_010218.txt
+Es respecta l'ordre alfabètic original de les víctimes i se'n purguen les repeticions (persones amb sumaríssims diversos), fent constar només el nom complet, un gatell d'execució i el seu codi, segons l'ANC, dins un únic paquet d'*arrays*. Vegeu [personesJuridiquesRepresaliades_010218.txt][1], [donesRepresaliades_010218.txt][2] i [homesRepresaliats_010218.txt][3]
 
 El *prompt* d'execució, documenta la feina feta i si es donen possibles errors.
 
@@ -24,7 +24,7 @@ Necessita executar-se amb un algorisme de suport, dins el mateix directori:
 > **espiapaq_fura4_.ps**
 > Reescriu una *array* per a tota mena d'objectes inclosos i recursivitats.
 
-**personesJuridiquesRepresaliades_010218.txt**[https://github.com/marcantonifemfum/faSantJaume/blob/master/reparacioJuridicaVictimesFranquisme_pancarta160318.pdf]
+**personesJuridiquesRepresaliades_010218.txt**
 
 Paquet `[ … ]` d'*arrays* (escrit per llegeixCSVopenData_escriuArrays.ps) seguint el mateix ordre alfabètic original, amb la sintaxi `[ (nom, nom) true/false (#Codi) ]`
 
@@ -55,11 +55,14 @@ Necessita executar-se amb dos algorismes més, dins el mateix directori, que us 
 > Inicialitza el format de pàgina (*MediaBox*), amb les seves àrees normatives de treball (*TrimBox, BleedBox* i també pot activar *ArtBox* i *CropBox*). Genera les creus de tall (*PrinterMarks*) de forma especial com anotacions i, activa o no, la sobreimpressió en CMYK.
 
 Teniu un exemple del resultat final (work in progress) a…
-[**reparacioJuridicaVictimesFranquisme_pancarta160318.pdf**][1]
+[**reparacioJuridicaVictimesFranquisme_pancarta160318.pdf**][4]
 
 NOTA IMPORTANT PER A LA CERCA DE NOMS DINS EL PDF: amb *viewers* tipus *AdobeReader* (almenys en darreres versions a MacOSX), degut segurament a l'alta densitat de text dins d'una sola pàgina (més de seixanta-sis mil registres), el *Find*/*Search* no funciona correctament (localitza noms erronis!).
 
 
 Documentació d'errors, suggeriments i tota mena de col·laboracions, seran benvingudes!
 
-[1]: https://github.com/marcantonifemfum/faSantJaume/blob/master/reparacioJuridicaVictimesFranquisme_pancarta160318.pdf
+[1]: https://github.com/marcantonifemfum/faSantJaume/blob/master/personesJuridiquesRepresaliades_010218.txt
+[2]: https://github.com/marcantonifemfum/faSantJaume/blob/master/donesRepresaliades_010218.txt
+[3]: https://github.com/marcantonifemfum/faSantJaume/blob/master/homesRepresaliats_010218.txt
+[4]: https://github.com/marcantonifemfum/faSantJaume/blob/master/reparacioJuridicaVictimesFranquisme_pancarta160318.pdf
