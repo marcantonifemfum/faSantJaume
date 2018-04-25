@@ -3,7 +3,7 @@
 %#  i les escriu en arrays categoritzades i adaptades a l'open data set de la Llista de reparació jurídica de víctimes
 %#  del franquisme (1938-1978) publicades per l'Arxiu Nacional de Catalunya
 %#  https://analisi.transparenciacatalunya.cat/browse?category=Mem%C3%B2ria
-%#  https://analisi.transparenciacatalunya.cat/Mem-ria/Llista-de-reparaci-jur-dica-de-v-ctimes-del-franqu/ebet-mrfp
+%#  https://analisi.transparenciacatalunya.cat/Mem-ria/Llista-de-reparaci-jur-dica-de-v-ctimes-del-franqu/3bjt-k7vu
 %#  http://anc.gencat.cat/ca/detall/noticia/La-llista-de-reparacio-juridica-de-victimes-del-franquisme-en-dades-obertes
 %#
 %#  Per a intèrprets `GNU GPL Ghostscript´ però també, amb ben pocs retocs, pot córrer
@@ -31,12 +31,18 @@
 
 %% els valors principals de configuració són comentats amb %#
 
-%%ATENCIÓ les dades del CSV... http://anc.gencat.cat/ca/detall/noticia/La-llista-de-reparacio-juridica-de-victimes-del-franquisme-en-dades-obertes ...tenen alguns errors
+%%ATENCIÓ les dades del CSV... http://anc.gencat.cat/ca/detall/noticia/La-llista-de-reparacio-juridica-de-victimes-del-franquisme-en-dades-obertes ...detectem incoherències i errors diversos
 %# CAL corregir abans de tractar-les:
-%% als primers camps, corresponents a persones jurídiques, hi ha diversos retorns de carro innecessaris
-%% hi ha dobles cometes " innecessàries i repetides a noms diversos de persones físiques i jurídiques
-%% hi ha camps amb el nom de la persona jurídica on s'hi han inclòs el motius (repetits al camp que toca) 
-%% hem canviat un punt per una coma a Guissona, afegint més comes al nom massa llarg i hem posat a caixa baixa Diari Revista
+%% als primers camps, corresponents a persones jurídiques, hi ha retorns de carro innecessaris que trenquen la sintaxi del CSV
+%% concretament als registres codi: 103990, 107942, 138542 i 109400
+%% hi ha dobles cometes " innecessàries i repetides en noms diversos de persones físiques i jurídiques
+%% concretament: 103990, 144537, 143742, 134935, 144051, 144697, 33085, 143806, 144502, 148190, 147794, 39625, 107942, 143570,
+%% 152061, 138542, 109400, 145966
+%% registres amb el camp del nom de la persona jurídica on s'hi han inclòs el motiu de la denúncia (repetit del camp on toca)
+%% concretament: 103990, 107942, 138542 i 109400
+%% al registre 144051 de la Cooperativa de Guissona, evitem l'excés de text fent:
+%% GUISSONA, COOPERATIVA AGROPECUARIA DE, NUESTRA SEÑORA CLAUSTRO, CASA RURAL DE
+%% als registres de persones jurídiques hem normalitzat la caixa de les denominacions (diari) (revista)
 %% hi ha el registre Codi 37682 i cognoms nom SALUDES COMPANYS, Miguel que al camp pena i duu un ; de+ malgrat les ""
 %% "Sis anys, deu mesos i un dia de presó major; dos anys, onze mesos i onze dies de presó menor"
 %% hi ha el registre Codi 145966 amb " innecessàries [("WELZEL, Georg Michael \("Heinz Ches"\)") true (145966) ]
@@ -47,8 +53,10 @@
 %% (/Users/femfum/OnEtsOncleGuillem/parlament/ReparacioJuridicaVictimes36-77/2017-07-12_Llistat_Llei_11_2017.csv)
 %% un camp més (el darrer)
 %% (/Users/femfum/OnEtsOncleGuillem/parlament/ReparacioJuridicaVictimes36-77/20171101_actualitzat_llistat_Llei_11_2017.csv)
-%# darrera actualització 01.02.18
-(/Users/femfum/OnEtsOncleGuillem/parlament/ReparacioJuridicaVictimes36-77/faStJaume/20171101_actualitzat_llistat_Llei_11_2017_darrer010218.csv)
+%% actualització 01.02.18
+%% (/Users/femfum/OnEtsOncleGuillem/parlament/ReparacioJuridicaVictimes36-77/faStJaume/20171101_actualitzat_llistat_Llei_11_2017_darrer010218.csv)
+%# darrera actualització 01.04.18/06.04.18
+(/Users/femfum/OnEtsOncleGuillem/parlament/ReparacioJuridicaVictimes36-77/faStJaume/20171101_actualitzat_llistat_Llei_11_2017_actualitzat010418.csv)
 /Arxiu exch def
 
 %# caràcter separador de camps (s'entén que hi ha un registre per línia)
@@ -88,7 +96,11 @@ systemdict /EncodingDirectory get /WinAnsiEncoding get
  (afusellades)  %% 25
  (ref num arxiu)  %% 26
  (autoria i data de la descripció)  %% 27
- (data correcció registre)  %% 28 és previst que hi sigui però a les dades del darrer CSV no hi és a cap registre
+ (data correccio registre)  %% 28 
+ (Municipi_Naixement_Longitud_ETRS89)  %% 29
+ (Municipi_Naixement_Latitud_ETRS89)  %% 30
+ (Municipi_Residencia_Longitud_ETRS89)  %% 31
+ (Municipi_Residencia_Latitud_ETRS89)  %% 32
 ]
 /cAmps exch def
 
@@ -107,6 +119,12 @@ systemdict /EncodingDirectory get /WinAnsiEncoding get
 /iPersonesAfusellades 0 def
 %% comptador de registres
 /rgstrs 0 def
+
+%% per saber de quin any a quin any són aquests judicis sumaríssims
+/max21 0 def
+/min21 100000 def
+/max22 0 def
+/min22 100000 def
 
 %% cognoms+nom més llarg (text)
 /araNomMesLlarg null def
@@ -135,26 +153,31 @@ Arxiu (r) file dup 3072 string readline pop
 {  %% loop per registre
  sepArador search
  {  %% esbrinem camp a camp
-  cAmps 4 index get eq
+  3 index cAmps length ge
   {
-   pop exch 1 add exch  %% fem córrer l'índex
+   (\n\n >>> HI HA UN CANVI en el nombre de camps... pleguem!\n\n)print flush quit
   }
   {
-   pop
-   (\n\n >>> HI HA UN CANVI a l'enunciat del camp... )print flush
-   exch cAmps exch get print flush ( ...pleguem!\n\n)print flush
-   pstack quit
+   cAmps 4 index get eq
+   {
+    pop exch 1 add exch  %% fem córrer l'índex
+   }
+   {
+    pop
+    (\n\n >>> HI HA UN CANVI a l'enunciat del camp... )print flush
+    exch cAmps exch get print flush ( ...pleguem!\n\n)print flush
+    pstack quit
+   }ifelse
   }ifelse
  }
  {
-  pop exit
+  pop pop exit
  }ifelse
 }loop  %% loop per registre
-1 add cAmps length ne
-{
- (\n\n >>> HI HA UN CANVI en el nombre de camps... pleguem!\n\n)print flush quit
-}if
+
 /arXiu exch def  %% capturem el fitxer viu per seguir llegint
+
+/elDesem true def  %% valor inicial del gatell de noms duplicats
 
 {  %% loop de lectura i cerca al CSV
  arXiu 3072 string readline
@@ -273,6 +296,47 @@ Arxiu (r) file dup 3072 string readline pop
      pop 
     }
     {
+     %% per saber de quin a quin any són el topall de judicis
+     iCamp 21 eq
+     {
+      dup length 0 ne
+      {
+       dup cvi dup max21 gt
+       {
+        /max21 exch def
+       }
+       {
+        dup min21 lt
+        {
+         /min21 exch def
+        }
+        {
+         pop
+        }ifelse
+       }ifelse
+      }if
+     }
+     {
+      iCamp 22 eq
+      {
+       dup length 0 ne
+       {
+        dup cvi dup max22 gt
+        {
+         /max22 exch def
+        }
+        {
+         dup min22 lt
+         {
+          /min22 exch def
+         }
+         {
+          pop
+         }ifelse
+        }ifelse
+       }if
+      }if
+     }ifelse
      iCamp 25 eq  %% executat/da?
      {
       %% total d'afusellats (H/D)
@@ -300,15 +364,16 @@ Arxiu (r) file dup 3072 string readline pop
       }ifelse
      }
      {
+      %% iCamp 28 eq
+      %% {  %%  ens llista la data de modificació dels registres
+      %%  dup length 0 ne
+      %%  {
+      %%   dup ==
+      %%  }if
+      %% }if
       pop pop
      }ifelse
     }ifelse
-
-%%EP!
-    iCamp 28 eq
-    {  %% hi ha cap registre que dugui el darrer camp possible amb la data de modificació
-     araCodi == 
-    }if
 
     %% deixem la resta de la línia del registre a l'stack
     iCamp 1 add /iCamp exch def  %% índex del camp
@@ -351,6 +416,11 @@ iDonesIndultadesConsellsDguerra 128 string cvs print flush ( <<< dones indultade
 iPersonesAfusellades 128 string cvs print flush ( <<< persones afusellades (H/D)\n) print flush
 araNomMesLlarg print flush ( <<< possiblement el nom més llarg a compondre\n) print flush
 iNomMesLlarg 128 string cvs print flush ( <<< nombre de caràcters del nom més llarg a compondre\n) print flush
+
+min21 128 string cvs print flush ( <<< camp 21 :: any +petit\n) print flush
+max21 128 string cvs print flush ( <<< camp 21 :: any +gran\n) print flush
+min22 128 string cvs print flush ( <<< camp 22 :: any +petit\n) print flush
+max22 128 string cvs print flush ( <<< camp 22 :: any +gran\n) print flush
 
 (\n\n...escrivim les arrays a disc...\n\n)print flush
 (espiapaq_fura4_.ps) (r) file cvx exec  %# carreguem en memòria el procediment espiapaq_fura4

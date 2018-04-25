@@ -3,7 +3,7 @@
 %#  via llegeixCSVopenData_escriuArrays.ps provinents del CSV de la Llista de Reparació Jurídica de Víctimes del Franquisme
 %#  (1938-1978) publicades per l'Arxiu Nacional de Catalunya...
 %#  https://analisi.transparenciacatalunya.cat/browse?category=Mem%C3%B2ria
-%#  https://analisi.transparenciacatalunya.cat/Mem-ria/Llista-de-reparaci-jur-dica-de-v-ctimes-del-franqu/ebet-mrfp
+%#  https://analisi.transparenciacatalunya.cat/Mem-ria/Llista-de-reparaci-jur-dica-de-v-ctimes-del-franqu/3bjt-k7vu
 %#  http://anc.gencat.cat/ca/detall/noticia/La-llista-de-reparacio-juridica-de-victimes-del-franquisme-en-dades-obertes
 %#  ...i les compon dinàmicament encolumnades, per categories, amb caplletres alfabètiques i ressaltant-ne les execucions,
 %#  amb valors totals i unes capçaleres fixes, per a confeccionar una gran parcarta (10x1,5m aprox) per a les concentracions
@@ -578,21 +578,21 @@ pinca dup translate
 [  %# arrays de víctimes per cateegories escrites a disc via llegeixCSVopenData_escriuArrays.ps
  [
   (\n\n--- Persones Físiques Dones ---\n)
-  (/Users/femfum/OnEtsOncleGuillem/parlament/ReparacioJuridicaVictimes36-77/faStJaume/donesRepresaliades_010218.txt)
+  (/Users/femfum/OnEtsOncleGuillem/parlament/ReparacioJuridicaVictimes36-77/faStJaume/donesRepresaliades.txt)
   1
   /rD  %% variable per desar-hi els registres totals de dones
   /eD  %% variable per desar-hi els registres de dones executades
  ]
  [
   (\n\n--- Persones Físiques Homes ---\n)
-  (/Users/femfum/OnEtsOncleGuillem/parlament/ReparacioJuridicaVictimes36-77/faStJaume/homesRepresaliats_010218.txt)
+  (/Users/femfum/OnEtsOncleGuillem/parlament/ReparacioJuridicaVictimes36-77/faStJaume/homesRepresaliats.txt)
   2
   /rH  %% variable per desar-hi els registres totals d'homes
   /eH  %% variable per desar-hi els registres d'homes executats
  ]
  [
   (\n\n--- Persones Jurídiques ---\n)
-  (/Users/femfum/OnEtsOncleGuillem/parlament/ReparacioJuridicaVictimes36-77/faStJaume/personesJuridiquesRepresaliades_010218.txt)
+  (/Users/femfum/OnEtsOncleGuillem/parlament/ReparacioJuridicaVictimes36-77/faStJaume/personesJuridiquesRepresaliades.txt)
   0
   /rPJ  %% variable per desar-hi els registres totals de persones jurídiques
   /ePJ  %% variable per desar-hi els registres de persones jurídiques executades
@@ -951,19 +951,49 @@ grestore
  (\n\n <<<< EP! el canvi de columna trepitja un nom de doble línia ...pleguem!\n\n)print flush quit
 }if
 
+%% fa com l'antic Dymo d'Esselte 13.07.98
+/dimo
+{
+ gsave
+ dup true charpath  %% activem el path del text que escrivim
+ pathbbox  %% bbox a l'stack
+ 4 copy 3 -2 roll 4 -1 roll  %% càlcul de l'ample i alt
+ sub /_amp exch def sub /_alt exch def pop pop
+ 0 0 0 1 setcolor _amp _alt 4 copy 3 setlinewidth rectstroke rectfill  %% pintem el bbox negre
+ grestore show  %% pintem el text del color actiu quan fem la crida
+}bind def
+
 %% URL fixa de descàrrega de la darrera versió actualitzada de la pancarta i resistres totals
 gsave
 0 1 1 0 setcolor
 CosDeTextVictimes CAPinfo 28.35 mul 42 sub scalefont setfont
 xTbox marGes sub CAPinfo 28.35 mul marGes add translate 90 rotate
-0 marGes 2 div neg moveto (http://dom.cat/adecidir) show
+%% actualització de dades a l'Arxiu Nacional de Catalunya
+0 marGes 2 div neg moveto (http://dom.cat/19zg) show
+gsave
+CosDeTextVictimes CAPinfo 28.35 mul 42 sub 2.5 div scalefont setfont
 0 0 0 1 setcolor
+0 marGes 2 div neg CAPinfo 28.35 mul 42 sub add moveto
+(actualització de dades a l'Arxiu Nacional de Catalunya) show
+%% projecte de codi obert
+currentpoint CAPinfo 28.35 mul 42 sub add exch pop 0 exch moveto
+0 1 1 0 setcolor
+CosDeTextVictimes CAPinfo 28.35 mul 42 sub scalefont setfont
+(http://dom.cat/1hvj) show
+currentpoint CAPinfo 28.35 mul 42 sub add exch pop 0 exch moveto
+0 0 0 1 setcolor
+CosDeTextVictimes CAPinfo 28.35 mul 42 sub 2.5 div scalefont setfont
+(projecte de codi obert) show
+grestore
+0 0 1 0 setcolor  %% groc
 currentpoint exch marGes 4 mul add dup /araX exch def exch moveto
-rPJ 32 string cvs dup stringwidth pop neg 0 rmoveto show (  persones jurídiques) show
+rPJ 32 string cvs dup stringwidth pop neg 0 rmoveto dimo (  persones jurídiques) dimo
 currentpoint CAPinfo 28.35 mul 42 sub add exch pop araX exch moveto
-rH 32 string cvs dup stringwidth pop neg 0 rmoveto show (  homes # executats ) show eH 32 string cvs show
+.2 .2 0 0 setcolor  %% lila
+rD 32 string cvs dup stringwidth pop neg 0 rmoveto dimo (  dones # executades ) dimo eD 32 string cvs dimo
 currentpoint CAPinfo 28.35 mul 42 sub add exch pop araX exch moveto
-rD 32 string cvs dup stringwidth pop neg 0 rmoveto show (  dones # executades ) show eD 32 string cvs show
+0 0 0 0 setcolor  %% blanc
+rH 32 string cvs dup stringwidth pop neg 0 rmoveto dimo (  homes # executats ) dimo eH 32 string cvs dimo
 grestore
 
 showpage
@@ -1026,9 +1056,9 @@ mark
 %% <feff00b8002e00b700b400af006000b7002e00b8002e00b700b400a800ab007e>
 (https://github.com/marcantonifemfum/faSantJaume)
 /Producer (Algorismes de l'inútil per fer volar coloms ~ femfum.com)
-/Title (La llista de reparació jurídica de víctimes del franquisme en dades obertes. Darrera actualització 01/02/2018)
+/Title (La llista de reparació jurídica de víctimes del franquisme en dades obertes. Darrera actualització 01/04/2018)
 /Subject (http://anc.gencat.cat/ca/detall/noticia/La-llista-de-reparacio-juridica-de-victimes-del-franquisme-en-dades-obertes)
-/Keywords (http://anc.gencat.cat/.content/anc/noticies/Documents/20171101_actualitzat_llistat_Llei_11_2017.csv, Parlament de Catalunya, Arxiu Nacional de Catalunya, Franquisme, Guerra Civil Espanyola, Desaparicions Forçades o Involuntàries, tortura, Drets Humans, Francoism, Spanish Civil War, Enforced or Involuntary Disappearances, torture, Human Rights, Franquismo, Guerra Civil Española, Desapariciones Forzadas o Involuntarias, Derechos Humanos)
+/Keywords (Parlament de Catalunya, Arxiu Nacional de Catalunya, Franquisme, Guerra Civil Espanyola, Desaparicions Forçades o Involuntàries, tortura, Drets Humans, Francoism, Spanish Civil War, Enforced or Involuntary Disappearances, torture, Human Rights, Franquismo, Guerra Civil Española, Desapariciones Forzadas o Involuntarias, Derechos Humanos)
 /DOCINFO pdfmark
 
 (...brossa?)pstack
